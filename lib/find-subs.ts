@@ -31,7 +31,7 @@ export function findEligibleSubs(
   );
 
   return PLAYERS.filter(
-    (p) => p.ranking === targetRanking && !conflictingTeams.has(p.team)
+    (p) => p.ranking <= targetRanking && !conflictingTeams.has(p.team)
   )
     .map((p) => {
       const ownGame = SCHEDULE.find(
@@ -47,5 +47,5 @@ export function findEligibleSubs(
           : null,
       };
     })
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => b.ranking - a.ranking || a.name.localeCompare(b.name));
 }
