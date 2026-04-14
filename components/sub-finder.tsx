@@ -7,10 +7,8 @@ import {
   getTeamGames,
   getOpponent,
   formatTime,
-  type Player,
-  type Game,
 } from "@/lib/data";
-import { findEligibleSubs } from "@/lib/find-subs";
+import { findEligibleSubs, type EligibleSub } from "@/lib/find-subs";
 import { Badge } from "@/components/ui/badge";
 import {
   Phone,
@@ -160,7 +158,7 @@ export function SubFinder() {
       {/* Header */}
       <header className="pt-10 pb-6 px-5 text-center">
         <p className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground mb-2">
-          JCC Basketball &middot; Winter 2026
+          JCC Basketball &middot; Spring 2026
         </p>
         <h1 className="font-display text-4xl sm:text-5xl tracking-wide text-foreground">
           SUB FINDER
@@ -324,7 +322,7 @@ function SubCard({
   copiedField,
   onCopy,
 }: {
-  sub: Player;
+  sub: EligibleSub;
   copiedField: string | null;
   onCopy: (text: string, id: string) => void;
 }) {
@@ -347,6 +345,13 @@ function SubCard({
           <p className="text-xs text-muted-foreground mt-0.5">
             Team {sub.team}
           </p>
+          {sub.ownGame ? (
+            <p className="text-xs text-orange/80 mt-1">
+              Own game @ {formatTime(sub.ownGame.time)} vs {sub.ownGame.opponent}
+            </p>
+          ) : (
+            <p className="text-xs text-emerald-400/80 mt-1">BYE this week</p>
+          )}
         </div>
         <RankBadge ranking={sub.ranking} />
       </div>

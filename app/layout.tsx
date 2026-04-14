@@ -17,7 +17,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "JCC Sub Finder",
-  description: "Find eligible substitutes for JCC Basketball League - Winter 2026",
+  description: "Find eligible substitutes for JCC Basketball League - Spring 2026",
 };
 
 export const viewport: Viewport = {
