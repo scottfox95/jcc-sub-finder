@@ -190,9 +190,9 @@ export const SCHEDULE: Game[] = [
 
   // Sun May 31
   { date: "Sun May 31", time: "08:30", team1: "Avi", team2: "Tenenbaum" },
-  { date: "Sun May 31", time: "08:30", team1: "Schnipper", team2: "Picow" },
+  { date: "Sun May 31", time: "08:30", team1: "Bens", team2: "Eisinger" },
   { date: "Sun May 31", time: "09:30", team1: "Spizman", team2: "Hawkins" },
-  { date: "Sun May 31", time: "09:30", team1: "Bens", team2: "Eisinger" },
+  { date: "Sun May 31", time: "09:30", team1: "Schnipper", team2: "Picow" },
   { date: "Sun May 31", time: "10:30", team1: "Khoury", team2: "Shulman" },
   { date: "Sun May 31", time: "10:30", team1: "Farkas", team2: "Roth" },
 
