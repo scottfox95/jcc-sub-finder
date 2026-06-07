@@ -214,6 +214,8 @@ export const SCHEDULE: Game[] = [
 
   // Wed Jun 10 — Playoffs
   { date: "Wed Jun 10", time: "19:00", team1: "Singer", team2: "Schnipper" },
+  { date: "Wed Jun 10", time: "19:00", team1: "Hawkins", team2: "Avi" },
+  { date: "Wed Jun 10", time: "20:00", team1: "Eisinger", team2: "Bens" },
   { date: "Wed Jun 10", time: "20:00", team1: "Picow", team2: "Spizman" },
   { date: "Wed Jun 10", time: "21:00", team1: "Khoury", team2: "Tenenbaum" },
 ];
