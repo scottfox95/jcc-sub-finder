@@ -119,7 +119,7 @@ export const PLAYERS: Player[] = [
   // Team Spizman
   { name: "Derek Harris", ranking: 100, email: "derekharris12@me.com", phone: "205-243-9006", team: "Spizman" },
   { name: "David Cohen", ranking: 91, email: "david@peachstatepizza.com", phone: "404-944-8028", team: "Spizman" },
-  { name: "Justin Spizman", ranking: 86, email: "jspizman@gmail.com", phone: "678-522-9540", team: "Spizman" },
+  { name: "Justin Spizman", ranking: 88, email: "jspizman@gmail.com", phone: "678-522-9540", team: "Spizman" },
   { name: "Joe Rabus", ranking: 86, email: "jrabus@hotmail.com", phone: "914-582-1088", team: "Spizman" },
   { name: "Roger Panitch", ranking: 80, email: "roger.panitch@chhj.com", phone: "404-849-2016", team: "Spizman" },
 ];
