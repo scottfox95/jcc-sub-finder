@@ -218,6 +218,12 @@ export const SCHEDULE: Game[] = [
   { date: "Wed Jun 10", time: "20:00", team1: "Eisinger", team2: "Bens" },
   { date: "Wed Jun 10", time: "20:00", team1: "Picow", team2: "Spizman" },
   { date: "Wed Jun 10", time: "21:00", team1: "Khoury", team2: "Tenenbaum" },
+
+  // Wed Jun 17 — Playoffs
+  { date: "Wed Jun 17", time: "19:30", team1: "Picow", team2: "Avi" },
+  { date: "Wed Jun 17", time: "19:30", team1: "Roth", team2: "Farkas" },
+  { date: "Wed Jun 17", time: "20:30", team1: "Shulman", team2: "Khoury" },
+  { date: "Wed Jun 17", time: "20:30", team1: "Schnipper", team2: "Bens" },
 ];
 
 export function getTeamPlayers(team: string): Player[] {
