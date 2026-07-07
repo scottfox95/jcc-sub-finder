@@ -158,7 +158,7 @@ export function SubFinder() {
       {/* Header */}
       <header className="pt-10 pb-6 px-5 text-center">
         <p className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground mb-2">
-          JCC Basketball &middot; Spring 2026
+          JCC Basketball &middot; Summer 2026
         </p>
         <h1 className="font-display text-4xl sm:text-5xl tracking-wide text-foreground">
           SUB FINDER
