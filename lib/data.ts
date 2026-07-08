@@ -135,18 +135,18 @@ export const SCHEDULE: Game[] = [
 
   // Wed Jul 15
   { date: "Wed Jul 15", time: "19:00", team1: "Bens", team2: "Kirkley" },
-  { date: "Wed Jul 15", time: "19:00", team1: "Spizman", team2: "Rosner" },
+  { date: "Wed Jul 15", time: "19:00", team1: "Roth", team2: "Shulman" },
   { date: "Wed Jul 15", time: "20:00", team1: "Schnipper", team2: "Jackson" },
   { date: "Wed Jul 15", time: "20:00", team1: "Spielman", team2: "Khoury" },
-  { date: "Wed Jul 15", time: "21:00", team1: "Roth", team2: "Shulman" },
+  { date: "Wed Jul 15", time: "21:00", team1: "Spizman", team2: "Rosner" },
   { date: "Wed Jul 15", time: "21:00", team1: "Tohar", team2: "Weitz" },
 
   // Wed Jul 22
   { date: "Wed Jul 22", time: "19:00", team1: "Hawkins", team2: "Bens" },
   { date: "Wed Jul 22", time: "19:00", team1: "Spielman", team2: "Rosner" },
-  { date: "Wed Jul 22", time: "20:00", team1: "Kirkley", team2: "Schnipper" },
+  { date: "Wed Jul 22", time: "20:00", team1: "Jackson", team2: "Weitz" },
   { date: "Wed Jul 22", time: "20:00", team1: "Tohar", team2: "Shulman" },
-  { date: "Wed Jul 22", time: "21:00", team1: "Jackson", team2: "Weitz" },
+  { date: "Wed Jul 22", time: "21:00", team1: "Kirkley", team2: "Schnipper" },
   { date: "Wed Jul 22", time: "21:00", team1: "Khoury", team2: "Roth" },
 
   // Wed Jul 29
@@ -207,10 +207,10 @@ export const SCHEDULE: Game[] = [
   // Wed Aug 26
   { date: "Wed Aug 26", time: "19:00", team1: "Schnipper", team2: "Spizman" },
   { date: "Wed Aug 26", time: "19:00", team1: "Tohar", team2: "Hawkins" },
-  { date: "Wed Aug 26", time: "20:00", team1: "Khoury", team2: "Bens" },
   { date: "Wed Aug 26", time: "20:00", team1: "Rosner", team2: "Kirkley" },
+  { date: "Wed Aug 26", time: "20:00", team1: "Weitz", team2: "Roth" },
+  { date: "Wed Aug 26", time: "21:00", team1: "Khoury", team2: "Bens" },
   { date: "Wed Aug 26", time: "21:00", team1: "Shulman", team2: "Jackson" },
-  { date: "Wed Aug 26", time: "21:00", team1: "Weitz", team2: "Roth" },
 ];
 
 export function getTeamPlayers(team: string): Player[] {
