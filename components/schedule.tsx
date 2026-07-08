@@ -18,7 +18,7 @@ function fmtDate(d: string): string {
 
 function byeDateForTeam(team: string, dates: string[]): string {
   const d = dates.find((date) => getByeTeams(date).includes(team));
-  return d ? fmtDate(d) : "—";
+  return d ? fmtDate(d) : "none";
 }
 
 export function Schedule() {
@@ -63,7 +63,7 @@ export function Schedule() {
           <h2 className="font-display text-lg tracking-wide uppercase text-foreground/80 mb-3">
             Playoffs
           </h2>
-          <div className="rounded-xl bg-card border border-border/50 divide-y divide-border/40 overflow-hidden">
+          <div className="surface rounded-xl border border-border/60 divide-y divide-border/40 overflow-hidden">
             {PLAYOFFS.map((p) => (
               <div key={p.round} className="flex items-center justify-between px-4 py-3">
                 <span className="text-sm text-foreground/90">{p.round}</span>
@@ -77,7 +77,7 @@ export function Schedule() {
 
         <p className="text-[0.7rem] leading-relaxed text-muted-foreground/80 mt-5">
           Sunday games are mornings (8:30 / 9:30 / 10:30 AM). Team order in a matchup is
-          listing order only &mdash; not home/away.
+          listing order only, not home/away.
         </p>
       </main>
     </div>
@@ -98,19 +98,21 @@ function NightCard({
   const teamOnBye = highlight != null && byes.includes(highlight);
 
   return (
-    <section className="rounded-xl bg-card border border-border/50 overflow-hidden">
-      <div className="flex items-center justify-between gap-2 px-4 py-2.5 bg-secondary/40 border-b border-border/40">
-        <div className="flex items-baseline gap-2 min-w-0">
-          <span className="font-display text-orange text-sm shrink-0">GAME {gameNum}</span>
+    <section className="surface rounded-xl border border-border/60 overflow-hidden">
+      <div className="flex items-center justify-between gap-2 px-4 py-3 border-b border-border/40">
+        <div className="flex items-baseline gap-2.5 min-w-0">
+          <span className="font-display text-orange text-sm shrink-0 tracking-wide">
+            GAME {gameNum}
+          </span>
           <span className="text-sm font-medium text-foreground truncate">{fmtDate(date)}</span>
         </div>
         {byes.length > 0 && (
           <span
             className={
-              "text-[0.7rem] px-2 py-1 rounded-md shrink-0 " +
+              "text-[0.68rem] px-2 py-1 rounded-md shrink-0 border " +
               (teamOnBye
-                ? "bg-orange/20 text-orange font-semibold"
-                : "bg-secondary text-muted-foreground")
+                ? "bg-orange/15 text-orange border-orange/25 font-semibold"
+                : "bg-secondary/60 text-muted-foreground border-border/40")
             }
           >
             Bye: {byes.join(", ")}
@@ -126,11 +128,13 @@ function NightCard({
             <div
               key={idx}
               className={
-                "flex items-center gap-3 px-4 py-2.5 transition-colors " +
-                (hl ? "bg-orange/10" : "")
+                "flex items-center gap-3 pr-4 py-2.5 border-l-2 transition-colors duration-200 " +
+                (hl
+                  ? "bg-orange/[0.07] border-orange pl-[calc(1rem-2px)]"
+                  : "border-transparent pl-4")
               }
             >
-              <span className="text-xs tabular-nums text-muted-foreground w-[4.5rem] shrink-0">
+              <span className="text-xs tabular-nums text-muted-foreground w-[4.75rem] shrink-0">
                 {formatTime(g.time)}
               </span>
               <span
@@ -138,7 +142,8 @@ function NightCard({
                   "text-sm flex-1 " + (hl ? "text-foreground font-medium" : "text-foreground/80")
                 }
               >
-                {g.team1} <span className="text-muted-foreground/50">vs</span> {g.team2}
+                {g.team1} <span className="text-muted-foreground/50 font-normal">vs</span>{" "}
+                {g.team2}
               </span>
             </div>
           );
@@ -161,10 +166,10 @@ function FilterPill({
     <button
       onClick={onClick}
       className={
-        "px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors border active:scale-[0.97] " +
+        "px-3.5 py-1.5 rounded-full text-xs whitespace-nowrap transition-all duration-150 border active:scale-[0.96] " +
         (active
-          ? "bg-orange/15 text-orange font-semibold border-orange/25"
-          : "bg-card text-muted-foreground border-border/50 hover:text-foreground")
+          ? "bg-orange text-background font-semibold border-orange shadow-[0_1px_8px_-2px_rgba(255,107,43,0.55)]"
+          : "bg-card/60 text-muted-foreground border-border/50 hover:text-foreground hover:border-border")
       }
     >
       {label}

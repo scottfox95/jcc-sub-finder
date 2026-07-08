@@ -10,7 +10,6 @@ import {
 } from "@/lib/data";
 import { findEligibleSubs, type EligibleSub } from "@/lib/find-subs";
 import { SiteHeader } from "@/components/site-header";
-import { Badge } from "@/components/ui/badge";
 import {
   Phone,
   Mail,
@@ -205,10 +204,9 @@ export function SubFinder() {
                 <button
                   key={team}
                   onClick={() => setSelectedTeam(team)}
-                  className="group relative h-14 rounded-lg bg-card border border-border/50 text-sm font-medium text-foreground/90 transition-all duration-150 hover:border-orange/30 hover:bg-card/80 hover:text-foreground active:scale-[0.97]"
+                  className="surface surface-interactive h-14 rounded-xl border border-border/60 text-sm font-medium text-foreground/85 hover:text-foreground"
                 >
-                  <span className="relative z-10">{team}</span>
-                  <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-b from-orange/[0.03] to-transparent" />
+                  {team}
                 </button>
               ))}
             </div>
@@ -224,10 +222,10 @@ export function SubFinder() {
                 <button
                   key={player.name}
                   onClick={() => setSelectedPlayer(player.name)}
-                  className="group w-full flex items-center gap-4 px-4 py-3.5 rounded-lg bg-card border border-border/50 transition-all duration-150 hover:border-orange/30 hover:bg-card/80 active:scale-[0.99] text-left"
+                  className="surface surface-interactive group w-full flex items-center gap-4 px-4 py-3.5 rounded-xl border border-border/60 text-left"
                 >
                   <RankBadge ranking={player.ranking} />
-                  <span className="text-sm font-medium text-foreground/90 group-hover:text-foreground transition-colors">
+                  <span className="text-sm font-medium text-foreground/85 group-hover:text-foreground transition-colors">
                     {player.name}
                   </span>
                 </button>
@@ -245,10 +243,10 @@ export function SubFinder() {
                 <button
                   key={game.date}
                   onClick={() => setSelectedDate(game.date)}
-                  className="group w-full flex items-center gap-4 px-4 py-3.5 rounded-lg bg-card border border-border/50 transition-all duration-150 hover:border-orange/30 hover:bg-card/80 active:scale-[0.99] text-left"
+                  className="surface surface-interactive group w-full flex items-center gap-4 px-4 py-3.5 rounded-xl border border-border/60 text-left"
                 >
                   <div className="flex flex-col min-w-0 flex-1">
-                    <span className="text-sm font-medium text-foreground/90 group-hover:text-foreground transition-colors">
+                    <span className="text-sm font-medium text-foreground/85 group-hover:text-foreground transition-colors">
                       {game.date}
                     </span>
                     <span className="text-xs text-muted-foreground mt-0.5">
@@ -256,7 +254,7 @@ export function SubFinder() {
                       {getOpponent(game, selectedTeam)}
                     </span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-muted-foreground/30 group-hover:text-orange/50 transition-colors shrink-0" />
+                  <ChevronRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-orange group-hover:translate-x-0.5 transition-all shrink-0" />
                 </button>
               ))}
             </div>
@@ -323,27 +321,30 @@ function SubCard({
   const emailId = `email-${sub.name}`;
 
   const actionBtn =
-    "flex items-center justify-center gap-1.5 h-8 px-2.5 rounded-md bg-secondary/70 border border-border/30 text-xs text-muted-foreground hover:text-orange hover:border-orange/20 hover:bg-orange/5 transition-all";
+    "flex items-center justify-center gap-1.5 h-8 px-3 rounded-lg bg-secondary/60 border border-border/40 text-xs text-muted-foreground hover:text-orange hover:border-orange/25 hover:bg-orange/5 active:scale-[0.97] transition-all duration-150";
   const iconBtn =
-    "flex items-center justify-center w-8 h-8 rounded-md bg-secondary/70 border border-border/30 text-muted-foreground hover:text-orange hover:border-orange/20 hover:bg-orange/5 transition-all";
+    "flex items-center justify-center w-8 h-8 rounded-lg bg-secondary/60 border border-border/40 text-muted-foreground hover:text-orange hover:border-orange/25 hover:bg-orange/5 active:scale-[0.97] transition-all duration-150";
 
   return (
-    <div className="rounded-lg bg-card border border-border/50 px-4 py-4 space-y-3 hover:border-orange/20 transition-colors">
+    <div className="surface rounded-xl border border-border/60 px-4 py-4 space-y-3.5">
       {/* Name + team + ranking */}
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-foreground truncate">
+          <p className="text-[0.95rem] font-semibold text-foreground truncate leading-tight">
             {sub.name}
           </p>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-1">
             Team {sub.team}
           </p>
           {sub.ownGame ? (
-            <p className="text-xs text-orange/80 mt-1">
-              Own game @ {formatTime(sub.ownGame.time)} vs {sub.ownGame.opponent}
+            <p className="text-xs text-orange-dim mt-2">
+              Playing @ {formatTime(sub.ownGame.time)} vs {sub.ownGame.opponent}
             </p>
           ) : (
-            <p className="text-xs text-emerald-400/80 mt-1">BYE this week</p>
+            <span className="inline-flex items-center gap-1.5 mt-2 px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-[0.7rem] font-medium text-emerald-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              Bye this week
+            </span>
           )}
         </div>
         <RankBadge ranking={sub.ranking} />
