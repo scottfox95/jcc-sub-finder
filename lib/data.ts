@@ -231,3 +231,47 @@ export function formatTime(time: string): string {
   const displayHours = hours > 12 ? hours - 12 : hours;
   return `${displayHours}:${minutes.toString().padStart(2, "0")} ${period}`;
 }
+
+export interface PlayoffRound {
+  round: string;
+  date: string;
+}
+
+export const PLAYOFFS: PlayoffRound[] = [
+  { round: "First Round", date: "Wed Sep 2" },
+  { round: "Quarterfinals", date: "Wed Sep 9" },
+  { round: "Semifinals", date: "Wed Sep 16" },
+  { round: "Championship", date: "TBA" },
+];
+
+/** Game nights in chronological order (unique dates from the schedule). */
+export function getGameDates(): string[] {
+  const seen = new Set<string>();
+  const dates: string[] = [];
+  for (const g of SCHEDULE) {
+    if (!seen.has(g.date)) {
+      seen.add(g.date);
+      dates.push(g.date);
+    }
+  }
+  return dates;
+}
+
+/** All games on a given date, sorted by time then home team. */
+export function getGamesByDate(date: string): Game[] {
+  return SCHEDULE.filter((g) => g.date === date).sort(
+    (a, b) => a.time.localeCompare(b.time) || a.team1.localeCompare(b.team1)
+  );
+}
+
+/** Teams NOT playing on a given date (i.e., on bye that week). */
+export function getByeTeams(date: string): string[] {
+  const playing = new Set<string>();
+  for (const g of SCHEDULE) {
+    if (g.date === date) {
+      playing.add(g.team1);
+      playing.add(g.team2);
+    }
+  }
+  return TEAM_NAMES.filter((t) => !playing.has(t));
+}

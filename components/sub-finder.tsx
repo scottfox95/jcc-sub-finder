@@ -9,6 +9,7 @@ import {
   formatTime,
 } from "@/lib/data";
 import { findEligibleSubs, type EligibleSub } from "@/lib/find-subs";
+import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
 import {
   Phone,
@@ -156,15 +157,7 @@ export function SubFinder() {
   return (
     <div className="relative z-10 min-h-screen flex flex-col">
       {/* Header */}
-      <header className="pt-10 pb-6 px-5 text-center">
-        <p className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground mb-2">
-          JCC Basketball &middot; Summer 2026
-        </p>
-        <h1 className="font-display text-4xl sm:text-5xl tracking-wide text-foreground">
-          SUB FINDER
-        </h1>
-        <div className="mt-3 mx-auto w-12 h-0.5 bg-gradient-to-r from-transparent via-orange to-transparent" />
-      </header>
+      <SiteHeader active="finder" onWordmark={reset} />
 
       {/* Main content */}
       <main className="flex-1 px-4 sm:px-6 pb-12 max-w-lg mx-auto w-full">
