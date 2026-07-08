@@ -134,9 +134,9 @@ export const SCHEDULE: Game[] = [
   { date: "Wed Jul 8", time: "21:00", team1: "Shulman", team2: "Weitz" },
 
   // Wed Jul 15
-  { date: "Wed Jul 15", time: "19:00", team1: "Schnipper", team2: "Jackson" },
+  { date: "Wed Jul 15", time: "19:00", team1: "Bens", team2: "Kirkley" },
   { date: "Wed Jul 15", time: "19:00", team1: "Spizman", team2: "Rosner" },
-  { date: "Wed Jul 15", time: "20:00", team1: "Bens", team2: "Kirkley" },
+  { date: "Wed Jul 15", time: "20:00", team1: "Schnipper", team2: "Jackson" },
   { date: "Wed Jul 15", time: "20:00", team1: "Spielman", team2: "Khoury" },
   { date: "Wed Jul 15", time: "21:00", team1: "Roth", team2: "Shulman" },
   { date: "Wed Jul 15", time: "21:00", team1: "Tohar", team2: "Weitz" },
@@ -198,9 +198,9 @@ export const SCHEDULE: Game[] = [
 
   // Sun Aug 23
   { date: "Sun Aug 23", time: "08:30", team1: "Spielman", team2: "Spizman" },
-  { date: "Sun Aug 23", time: "08:30", team1: "Tohar", team2: "Schnipper" },
+  { date: "Sun Aug 23", time: "08:30", team1: "Weitz", team2: "Bens" },
   { date: "Sun Aug 23", time: "09:30", team1: "Rosner", team2: "Shulman" },
-  { date: "Sun Aug 23", time: "09:30", team1: "Weitz", team2: "Bens" },
+  { date: "Sun Aug 23", time: "09:30", team1: "Tohar", team2: "Schnipper" },
   { date: "Sun Aug 23", time: "10:30", team1: "Jackson", team2: "Hawkins" },
   { date: "Sun Aug 23", time: "10:30", team1: "Khoury", team2: "Kirkley" },
 
