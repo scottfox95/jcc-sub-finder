@@ -7,9 +7,12 @@ import {
   getGameDates,
   getGamesByDate,
   getByeTeams,
+  getTeamGames,
   formatTime,
 } from "@/lib/data";
+import { buildTeamCalendar, teamCalendarFilename } from "@/lib/calendar";
 import { SiteHeader } from "@/components/site-header";
+import { CalendarPlus, Download, Check } from "lucide-react";
 
 function fmtDate(d: string): string {
   const parts = d.split(" ");
@@ -52,6 +55,8 @@ export function Schedule() {
           </p>
         )}
 
+        <CalendarCTA team={team} />
+
         <div className="space-y-4 stagger-children">
           {dates.map((date, i) => (
             <NightCard key={date} date={date} gameNum={i + 1} highlight={team} />
@@ -80,6 +85,84 @@ export function Schedule() {
           listing order only, not home/away.
         </p>
       </main>
+    </div>
+  );
+}
+
+function CalendarCTA({ team }: { team: string | null }) {
+  const [added, setAdded] = useState(false);
+  const gameCount = team ? getTeamGames(team).length : 0;
+
+  function handleAdd() {
+    if (!team) return;
+    const ics = buildTeamCalendar(team);
+    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = teamCalendarFilename(team);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 4000);
+  }
+
+  return (
+    <div className="surface rounded-xl border border-border/60 px-4 py-4 mb-6">
+      <div className="flex items-center gap-3">
+        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-orange/10 border border-orange/20 shrink-0">
+          <CalendarPlus className="w-5 h-5 text-orange" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold text-foreground leading-tight">
+            Add your games to your calendar
+          </p>
+          <p className="text-xs text-muted-foreground mt-1 leading-snug">
+            {team ? (
+              <>
+                <span className="text-orange font-semibold">{team}</span> &middot;{" "}
+                {gameCount} {gameCount === 1 ? "game" : "games"} &middot; Apple or Google
+              </>
+            ) : (
+              "Pick your team above, then add every season game in one tap."
+            )}
+          </p>
+        </div>
+      </div>
+
+      {team && (
+        <button
+          onClick={handleAdd}
+          disabled={added}
+          className={
+            "mt-3.5 w-full h-11 rounded-lg flex items-center justify-center gap-2 text-sm font-semibold transition-all duration-200 active:scale-[0.98] " +
+            (added
+              ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25"
+              : "bg-orange text-background shadow-[0_1px_8px_-2px_rgba(255,107,43,0.6)] hover:brightness-105")
+          }
+        >
+          {added ? (
+            <>
+              <Check className="w-4 h-4" />
+              Downloaded — open the file to add
+            </>
+          ) : (
+            <>
+              <Download className="w-4 h-4" />
+              Add {team}&rsquo;s schedule
+            </>
+          )}
+        </button>
+      )}
+
+      {team && (
+        <p className="text-[0.68rem] text-muted-foreground/70 mt-2.5 leading-relaxed">
+          Downloads a calendar file. On iPhone/Mac it opens in Apple Calendar; on
+          Android or desktop, import it into Google Calendar.
+        </p>
+      )}
     </div>
   );
 }
