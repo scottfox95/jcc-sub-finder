@@ -3,7 +3,7 @@ import { Schedule } from "@/components/schedule";
 
 export const metadata: Metadata = {
   title: "Schedule · JCC Sub Finder",
-  description: "Full JCC Basketball League schedule - Summer 2026",
+  description: "Full JCC Basketball League schedule - Fall 2026",
 };
 
 export default function SchedulePage() {

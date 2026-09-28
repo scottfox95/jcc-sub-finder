@@ -5,7 +5,7 @@ import { getTeamGames } from "./data";
  *
  * The schedule in `data.ts` stores dates as weekday-less-of-year strings
  * ("Wed Jul 8") with no year, and times as local wall-clock ("19:00"). The
- * league runs Summer 2026 in Atlanta (Eastern Time), so every game is anchored
+ * league runs Fall 2026 in Atlanta (Eastern Time), so every game is anchored
  * to 2026 in the America/New_York zone. A VTIMEZONE block ships with the file
  * so the events display at the correct local time in any calendar app,
  * regardless of the viewer's own timezone.
@@ -13,6 +13,9 @@ import { getTeamGames } from "./data";
 
 /** The league season year. All games are anchored to this year. */
 const SEASON_YEAR = 2026;
+
+/** Season name shown in calendar titles and filenames. */
+const SEASON_NAME = "Fall";
 
 /** IANA timezone for the league (Atlanta). */
 const TZID = "America/New_York";
@@ -125,9 +128,9 @@ const VTIMEZONE = [
   "END:VTIMEZONE",
 ];
 
-/** Filename for a team's downloaded calendar, e.g. "Jackson-JCC-Summer-2026.ics". */
+/** Filename for a team's downloaded calendar, e.g. "Jackson-JCC-Fall-2026.ics". */
 export function teamCalendarFilename(team: string): string {
-  return `${team}-JCC-Summer-${SEASON_YEAR}.ics`;
+  return `${team}-JCC-${SEASON_NAME}-${SEASON_YEAR}.ics`;
 }
 
 /**
@@ -145,7 +148,7 @@ export function buildTeamCalendar(team: string): string {
     "PRODID:-//JCC Sub Finder//Team Schedule//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
-    `X-WR-CALNAME:JCC ${team} - Summer ${SEASON_YEAR}`,
+    `X-WR-CALNAME:JCC ${team} - ${SEASON_NAME} ${SEASON_YEAR}`,
     `X-WR-TIMEZONE:${TZID}`,
     ...VTIMEZONE,
   ];
@@ -165,7 +168,7 @@ export function buildTeamCalendar(team: string): string {
       `DTEND;TZID=${TZID}:${localStamp(end)}`,
       `SUMMARY:${escapeText(`JCC: ${team} vs ${opponent}`)}`,
       `LOCATION:${escapeText(EVENT_LOCATION)}`,
-      `DESCRIPTION:${escapeText(`JCC Basketball League - Summer ${SEASON_YEAR}`)}`,
+      `DESCRIPTION:${escapeText(`JCC Basketball League - ${SEASON_NAME} ${SEASON_YEAR}`)}`,
       "STATUS:CONFIRMED",
       "END:VEVENT"
     );

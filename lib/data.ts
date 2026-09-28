@@ -1,4 +1,4 @@
-export type Ranking = 100 | 97 | 94 | 91 | 88 | 86 | 84 | 82 | 80;
+export type Ranking = 100 | 96 | 94 | 90 | 88 | 86 | 84 | 82 | 80;
 
 export interface Player {
   name: string;
@@ -16,15 +16,15 @@ export interface Game {
 }
 
 export const TEAM_NAMES = [
-  "Bens",
   "Hawkins",
   "Jackson",
   "Khoury",
   "Kirkley",
+  "Levine",
   "Rosner",
   "Roth",
   "Schnipper",
-  "Shulman",
+  "Singer",
   "Spielman",
   "Spizman",
   "Tohar",
@@ -33,184 +33,184 @@ export const TEAM_NAMES = [
 
 export const PLAYERS: Player[] = [
   // Team Rosner
-  { name: "Adam Rosner", ranking: 97, email: "adamdavidrosner@gmail.com", phone: "904-716-8104", team: "Rosner" },
-  { name: "Brian Gee", ranking: 88, email: "bcgee@bellsouth.net", phone: "678-764-6946", team: "Rosner" },
-  { name: "Michael Kuniansky", ranking: 86, email: "kuniansky@gmail.com", phone: "404-219-2232", team: "Rosner" },
-  { name: "Mike Meisel", ranking: 86, email: "meisel87@gmail.com", phone: "904-472-0882", team: "Rosner" },
-  { name: "Adam Weinberg", ranking: 82, email: "adamjweinberg@gmail.com", phone: "401-255-2026", team: "Rosner" },
+  { name: "Adam Rosner", ranking: 94, email: "adamdavidrosner@gmail.com", phone: "904-716-8104", team: "Rosner" },
+  { name: "David Cohen", ranking: 88, email: "david@peachstatepizza.com", phone: "404-944-8028", team: "Rosner" },
+  { name: "David Weiner", ranking: 84, email: "davideweiner@gmail.com", phone: "404-754-2486", team: "Rosner" },
+  { name: "Mikey Kobrinsky", ranking: 82, email: "michael.kobrinsky@gmail.com", phone: "770-827-0827", team: "Rosner" },
+  { name: "Robert Tinter", ranking: 80, email: "robertstinter@gmail.com", phone: "404-281-7858", team: "Rosner" },
 
   // Team Khoury
-  { name: "Micah Engler", ranking: 94, email: "micah.engler@gmail.com", phone: "404-304-0342", team: "Khoury" },
-  { name: "Ben Khoury", ranking: 94, email: "bkhoury@fortitudesys.com", phone: "404-593-1527", team: "Khoury" },
-  { name: "Ryan Beetham", ranking: 88, email: "ryanmbeetham@gmail.com", phone: "919-525-4877", team: "Khoury" },
-  { name: "Mikey Kobrinsky", ranking: 84, email: "michael.kobrinsky@gmail.com", phone: "770-827-0827", team: "Khoury" },
+  { name: "Micah Engler", ranking: 90, email: "micah.engler@gmail.com", phone: "404-304-0342", team: "Khoury" },
+  { name: "Ben Khoury", ranking: 90, email: "bkhoury@fortitudesys.com", phone: "404-593-1527", team: "Khoury" },
+  { name: "Mike Meisel", ranking: 84, email: "meisel87@gmail.com", phone: "904-472-0882", team: "Khoury" },
+  { name: "Zach Gorowitz", ranking: 82, email: "zachgorowitz@gmail.com", phone: "678-315-0363", team: "Khoury" },
   { name: "Alex Khoury", ranking: 80, email: "acooppack@yahoo.com", phone: "513-470-5366", team: "Khoury" },
 
   // Team Kirkley
-  { name: "Josh Solomon", ranking: 94, email: "joshsolomon1@gmail.com", phone: "404-358-6862", team: "Kirkley" },
-  { name: "Terry Kirkley", ranking: 94, email: "terrykirkley@gmail.com", phone: "434-825-5924", team: "Kirkley" },
-  { name: "David Meiselman", ranking: 88, email: "davidmmeiselman@gmail.com", phone: "678-644-7860", team: "Kirkley" },
-  { name: "Reed Schlesinger", ranking: 86, email: "reed.schlesinger99@gmail.com", phone: "561-715-3976", team: "Kirkley" },
-  { name: "David Grocer", ranking: 80, email: "davidngrocer@gmail.com", phone: "404-664-4764", team: "Kirkley" },
+  { name: "Josh Solomon", ranking: 90, email: "joshsolomon1@gmail.com", phone: "404-358-6862", team: "Kirkley" },
+  { name: "Terry Kirkley", ranking: 90, email: "terrykirkley@gmail.com", phone: "434-825-5924", team: "Kirkley" },
+  { name: "Matt Weintraub", ranking: 88, email: "matthewsweintraub@gmail.com", phone: "404-583-4449", team: "Kirkley" },
+  { name: "Stevie Schraudner", ranking: 82, email: "stevietodd@hotmail.com", phone: "317-679-8674", team: "Kirkley" },
+  { name: "Jason Margolies", ranking: 80, email: "jmargolies93@gmail.com", phone: "407-453-1390", team: "Kirkley" },
 
   // Team Spielman
-  { name: "Ricky Kersey", ranking: 94, email: "ricky.kersey@gmail.com", phone: "443-538-6200", team: "Spielman" },
-  { name: "Jeremy Spielman", ranking: 94, email: "jwspielman@gmail.com", phone: "678-332-7077", team: "Spielman" },
-  { name: "Ben Shapiro", ranking: 88, email: "benshapiro27@gmail.com", phone: "678-315-1451", team: "Spielman" },
-  { name: "Aharon Shimshon", ranking: 84, email: "aharon.shimshon@gmail.com", phone: "770-500-9281", team: "Spielman" },
-  { name: "Jason Margolies", ranking: 80, email: "jmargolies93@gmail.com", phone: "407-453-1390", team: "Spielman" },
+  { name: "Jeremy Spielman", ranking: 90, email: "jwspielman@gmail.com", phone: "678-332-7077", team: "Spielman" },
+  { name: "Sam Grosoff", ranking: 88, email: "grosoffsam@gmail.com", phone: "404-388-8234", team: "Spielman" },
+  { name: "Josh Blum", ranking: 86, email: "joshbblum@gmail.com", phone: "770-356-4511", team: "Spielman" },
+  { name: "Brian Teitell", ranking: 82, email: "teitell10@gmail.com", phone: "214-636-8874", team: "Spielman" },
+  { name: "Zack Cohen", ranking: 80, email: "zachari1799@gmail.com", phone: "646-265-4915", team: "Spielman" },
 
-  // Team Roth
-  { name: "Ilan Stern", ranking: 97, email: "ilanstern3@hotmail.com", phone: "614-595-3613", team: "Roth" },
-  { name: "Brian Singer", ranking: 91, email: "briansinger79@gmail.com", phone: "847-772-5856", team: "Roth" },
-  { name: "Michael Roth", ranking: 88, email: "roth.michael6@gmail.com", phone: "404-697-2442", team: "Roth" },
-  { name: "Brian Teitell", ranking: 84, email: "teitell10@gmail.com", phone: "214-636-8874", team: "Roth" },
-  { name: "Jay Roth", ranking: 80, email: "jmr30342@comcast.net", phone: "404-663-8852", team: "Roth" },
+  // Team Levine
+  { name: "Jordan Eisner", ranking: 100, email: "jordaneisner89@gmail.com", phone: "478-390-5332", team: "Levine" },
+  { name: "Ben Levine", ranking: 86, email: "ben_levine1@hotmail.com", phone: "704-277-3467", team: "Levine" },
+  { name: "Michael Kuniansky", ranking: 84, email: "kuniansky@gmail.com", phone: "404-219-2232", team: "Levine" },
+  { name: "Jon Sadow", ranking: 82, email: "jdsadow@gmail.com", phone: "404-218-6575", team: "Levine" },
+  { name: "David Grocer", ranking: 80, email: "davidngrocer@gmail.com", phone: "404-664-4764", team: "Levine" },
 
   // Team Jackson
-  { name: "Gavi Abraham", ranking: 100, email: "gavrielabraham@gmail.com", phone: "404-790-4233", team: "Jackson" },
+  { name: "Peter Rivner", ranking: 96, email: "peter.rivner@gmail.com", phone: "706-296-8806", team: "Jackson" },
   { name: "Scott Tenenbaum", ranking: 88, email: "scott.f.tenenbaum@gmail.com", phone: "404-895-3578", team: "Jackson" },
   { name: "Izzy Jackson", ranking: 86, email: "isadoremj@gmail.com", phone: "404-989-8903", team: "Jackson" },
-  { name: "Elliot Dane", ranking: 84, email: "bigdaddydane@comcast.net", phone: "404-432-4852", team: "Jackson" },
-  { name: "Robert Tinter", ranking: 82, email: "robertstinter@gmail.com", phone: "404-281-7858", team: "Jackson" },
-
-  // Team Shulman
-  { name: "Matt Weinstein", ranking: 97, email: "matthew.b.weinstein@gmail.com", phone: "724-413-6775", team: "Shulman" },
-  { name: "Darell Vaughn", ranking: 91, email: "darellvaughn10@gmail.com", phone: "404-216-3470", team: "Shulman" },
-  { name: "Brian Shulman", ranking: 86, email: "brishul@gmail.com", phone: "248-225-7485", team: "Shulman" },
-  { name: "Demitri Knowles", ranking: 86, email: "demitri.knowles@atlantajcc.org", phone: "434-221-9287", team: "Shulman" },
-  { name: "Sam Miller", ranking: 82, email: "sammiller0013@gmail.com", phone: "516-287-2008", team: "Shulman" },
-
-  // Team Schnipper
-  { name: "Eyal Cohen", ranking: 100, email: "eyal.cohen99@gmail.com", phone: "404-422-2568", team: "Schnipper" },
-  { name: "Ben Levine", ranking: 88, email: "ben_levine1@hotmail.com", phone: "704-277-3467", team: "Schnipper" },
-  { name: "David Schnipper", ranking: 86, email: "dmschnipper@gmail.com", phone: "404-983-6051", team: "Schnipper" },
-  { name: "Kenny Pepper", ranking: 84, email: "kenny.m.pepper@gmail.com", phone: "678-770-5115", team: "Schnipper" },
-  { name: "Roger Panitch", ranking: 80, email: "roger.panitch@chhj.com", phone: "404-849-2016", team: "Schnipper" },
-
-  // Team Spizman
-  { name: "Peter Rivner", ranking: 100, email: "peter.rivner@gmail.com", phone: "706-296-8806", team: "Spizman" },
-  { name: "Lens Moise", ranking: 88, email: "lensmoise3@gmail.com", phone: "561-767-5726", team: "Spizman" },
-  { name: "Justin Spizman", ranking: 86, email: "jspizman@gmail.com", phone: "678-522-9540", team: "Spizman" },
-  { name: "Howie Lips", ranking: 84, email: "hlips99@gmail.com", phone: "404-645-6078", team: "Spizman" },
-  { name: "Roey Shoshan", ranking: 84, email: "roey.shoshan@atlantajcc.org", phone: "678-600-9800", team: "Spizman" },
-
-  // Team Bens
-  { name: "Derek Harris", ranking: 100, email: "derekharris12@me.com", phone: "205-243-9006", team: "Bens" },
-  { name: "Talan Bens", ranking: 91, email: "gatordmd2000@yahoo.com", phone: "678-756-5680", team: "Bens" },
-  { name: "Jeremiah Davison", ranking: 86, email: "jeremiah@multibandstudios.com", phone: "770-773-5694", team: "Bens" },
-  { name: "Mike Bens", ranking: 84, email: "gatordmd2000@yahoo.com", phone: "678-516-8173", team: "Bens" },
-  { name: "David Rubin", ranking: 82, email: "davidhenryrubin@gmail.com", phone: "843-991-4995", team: "Bens" },
-
-  // Team Hawkins
-  { name: "Cole Heaberlin", ranking: 97, email: "heaberlincole@gmail.com", phone: "678-315-3519", team: "Hawkins" },
-  { name: "David Cohen", ranking: 91, email: "david@peachstatepizza.com", phone: "404-944-8028", team: "Hawkins" },
-  { name: "Stevie Schraudner", ranking: 84, email: "stevietodd@hotmail.com", phone: "317-679-8674", team: "Hawkins" },
-  { name: "Charlie Hawkins", ranking: 84, email: "cehawkinsiii@hotmail.com", phone: "404-210-9104", team: "Hawkins" },
-  { name: "Adam Blick", ranking: 82, email: "adamblick@gmail.com", phone: "703-350-3097", team: "Hawkins" },
-
-  // Team Tohar
-  { name: "Miki Covitz", ranking: 94, email: "covitzmiki@gmail.com", phone: "404-405-9147", team: "Tohar" },
-  { name: "Brandon Picow", ranking: 94, email: "brandonpicow@gmail.com", phone: "803-730-0244", team: "Tohar" },
-  { name: "Matt Weintraub", ranking: 91, email: "matthewsweintraub@gmail.com", phone: "404-583-4449", team: "Tohar" },
-  { name: "Jon Sadow", ranking: 82, email: "jdsadow@gmail.com", phone: "404-218-6575", team: "Tohar" },
-  { name: "Avi Tohar", ranking: 80, email: "avi_tohar@yahoo.com", phone: "404-789-7977", team: "Tohar" },
+  { name: "Yisrael New", ranking: 82, email: "rabbiyisrael@gmail.com", phone: "678-612-7313", team: "Jackson" },
+  { name: "Jordan Ross", ranking: 80, email: "jordaneross1@gmail.com", phone: "251-422-4189", team: "Jackson" },
 
   // Team Weitz
-  { name: "Eric Smith", ranking: 100, email: "efsmith34@gmail.com", phone: "404-218-4329", team: "Weitz" },
-  { name: "Ari Weitz", ranking: 91, email: "ari.weitz@gmail.com", phone: "404-451-2663", team: "Weitz" },
-  { name: "Omer Naman", ranking: 88, email: "omernaman@gmail.com", phone: "470-447-3073", team: "Weitz" },
-  { name: "George Medina", ranking: 84, email: "george.medina@yahoo.com", phone: "786-280-2477", team: "Weitz" },
-  { name: "Dave Blum", ranking: 80, email: "daveblum@hotmail.com", phone: "404-953-9377", team: "Weitz" },
+  { name: "Alex Matthysse", ranking: 100, email: "ajmatthysse@gmail.com", phone: "786-423-2206", team: "Weitz" },
+  { name: "Ari Weitz", ranking: 88, email: "ari.weitz@gmail.com", phone: "404-451-2663", team: "Weitz" },
+  { name: "Howie Lips", ranking: 82, email: "hlips99@gmail.com", phone: "404-645-6078", team: "Weitz" },
+  { name: "Mike Weiss", ranking: 82, email: "michael.weiss1120@gmail.com", phone: "954-695-5295", team: "Weitz" },
+  { name: "David Forbes", ranking: 80, email: "forbdav@4securemail.com", phone: "646-599-2179", team: "Weitz" },
+
+  // Team Singer
+  { name: "Yuval Galron", ranking: 90, email: "ygalron6@gmail.com", phone: "770-544-8376", team: "Singer" },
+  { name: "Brian Singer", ranking: 88, email: "briansinger79@gmail.com", phone: "847-772-5856", team: "Singer" },
+  { name: "Steph Noh", ranking: 84, email: "stephen.noh@gmail.com", phone: "224-612-1483", team: "Singer" },
+  { name: "Reed Schlesinger", ranking: 84, email: "reed.schlesinger99@gmail.com", phone: "561-715-3976", team: "Singer" },
+  { name: "Michael Usdan", ranking: 80, email: "miusdan@gmail.com", phone: "404-805-3536", team: "Singer" },
+
+  // Team Spizman
+  { name: "Ricky Kersey", ranking: 90, email: "ricky.kersey@gmail.com", phone: "443-538-6200", team: "Spizman" },
+  { name: "Jake Tenorio", ranking: 90, email: "jaketenorio@gmail.com", phone: "505-270-9613", team: "Spizman" },
+  { name: "Sam Blechman", ranking: 84, email: "sblechman89@gmail.com", phone: "678-576-9822", team: "Spizman" },
+  { name: "Justin Spizman", ranking: 84, email: "jspizman@gmail.com", phone: "678-522-9540", team: "Spizman" },
+  { name: "Sam Miller", ranking: 82, email: "sammiller0013@gmail.com", phone: "516-287-2008", team: "Spizman" },
+
+  // Team Roth
+  { name: "Eyal Cohen", ranking: 100, email: "eyal.cohen99@gmail.com", phone: "404-422-2568", team: "Roth" },
+  { name: "Ryan Firestone", ranking: 86, email: "ryan.firestone@yahoo.com", phone: "954-591-2247", team: "Roth" },
+  { name: "Michael Roth", ranking: 86, email: "roth.michael6@gmail.com", phone: "404-697-2442", team: "Roth" },
+  { name: "Roey Shoshan", ranking: 82, email: "roey.shoshan@atlantajcc.org", phone: "678-600-9800", team: "Roth" },
+  { name: "Jay Roth", ranking: 80, email: "jmr30342@comcast.net", phone: "404-663-8852", team: "Roth" },
+
+  // Team Hawkins
+  { name: "Matthew Weinstein", ranking: 96, email: "matthew.b.weinstein@gmail.com", phone: "724-413-6775", team: "Hawkins" },
+  { name: "Omer Naman", ranking: 86, email: "omernaman@gmail.com", phone: "470-447-3073", team: "Hawkins" },
+  { name: "David Meiselman", ranking: 86, email: "davidmmeiselman@gmail.com", phone: "678-644-7860", team: "Hawkins" },
+  { name: "Charlie Hawkins", ranking: 82, email: "cehawkinsiii@hotmail.com", phone: "404-210-9104", team: "Hawkins" },
+  { name: "Dave Blum", ranking: 80, email: "daveblum@hotmail.com", phone: "404-953-9377", team: "Hawkins" },
+
+  // Team Tohar
+  { name: "Gavi Abraham", ranking: 96, email: "gavrielabraham@gmail.com", phone: "404-790-4233", team: "Tohar" },
+  { name: "Ben Zachariah", ranking: 86, email: "bzachari117@gmail.com", phone: "404-668-8484", team: "Tohar" },
+  { name: "Jared Kopman", ranking: 84, email: "jared.kopman@gmail.com", phone: "404-432-4660", team: "Tohar" },
+  { name: "George Medina", ranking: 82, email: "george.medina@yahoo.com", phone: "786-280-2477", team: "Tohar" },
+  { name: "Avi Tohar", ranking: 80, email: "avi_tohar@yahoo.com", phone: "404-789-7977", team: "Tohar" },
+
+  // Team Schnipper
+  { name: "Brandon Picow", ranking: 94, email: "brandonpicow@gmail.com", phone: "803-730-0244", team: "Schnipper" },
+  { name: "Talan Bens", ranking: 90, email: "talanbens24@gmail.com", phone: "678-756-5680", team: "Schnipper" },
+  { name: "David Schnipper", ranking: 86, email: "dmschnipper@gmail.com", phone: "404-983-6051", team: "Schnipper" },
+  { name: "Daniel Kobrinsky", ranking: 82, email: "kobrinsky1@comcast.net", phone: "770-827-8888", team: "Schnipper" },
+  { name: "Roger Panitch", ranking: 80, email: "roger.panitch@chhj.com", phone: "404-849-2016", team: "Schnipper" },
 ];
 
 export const SCHEDULE: Game[] = [
-  // Wed Jul 8
-  { date: "Wed Jul 8", time: "19:00", team1: "Spielman", team2: "Jackson" },
-  { date: "Wed Jul 8", time: "19:00", team1: "Spizman", team2: "Hawkins" },
-  { date: "Wed Jul 8", time: "20:00", team1: "Bens", team2: "Roth" },
-  { date: "Wed Jul 8", time: "20:00", team1: "Kirkley", team2: "Tohar" },
-  { date: "Wed Jul 8", time: "21:00", team1: "Rosner", team2: "Khoury" },
-  { date: "Wed Jul 8", time: "21:00", team1: "Shulman", team2: "Weitz" },
+  // Wed Sep 30
+  { date: "Wed Sep 30", time: "19:00", team1: "Jackson", team2: "Spizman" },
+  { date: "Wed Sep 30", time: "19:00", team1: "Tohar", team2: "Weitz" },
+  { date: "Wed Sep 30", time: "20:00", team1: "Hawkins", team2: "Spielman" },
+  { date: "Wed Sep 30", time: "20:00", team1: "Roth", team2: "Schnipper" },
+  { date: "Wed Sep 30", time: "21:00", team1: "Kirkley", team2: "Levine" },
+  { date: "Wed Sep 30", time: "21:00", team1: "Rosner", team2: "Singer" },
 
-  // Wed Jul 15
-  { date: "Wed Jul 15", time: "19:00", team1: "Bens", team2: "Kirkley" },
-  { date: "Wed Jul 15", time: "19:00", team1: "Roth", team2: "Shulman" },
-  { date: "Wed Jul 15", time: "20:00", team1: "Schnipper", team2: "Jackson" },
-  { date: "Wed Jul 15", time: "20:00", team1: "Spielman", team2: "Khoury" },
-  { date: "Wed Jul 15", time: "21:00", team1: "Spizman", team2: "Rosner" },
-  { date: "Wed Jul 15", time: "21:00", team1: "Tohar", team2: "Weitz" },
+  // Wed Oct 7
+  { date: "Wed Oct 7", time: "19:00", team1: "Schnipper", team2: "Hawkins" },
+  { date: "Wed Oct 7", time: "19:00", team1: "Spizman", team2: "Tohar" },
+  { date: "Wed Oct 7", time: "20:00", team1: "Jackson", team2: "Kirkley" },
+  { date: "Wed Oct 7", time: "20:00", team1: "Levine", team2: "Spielman" },
+  { date: "Wed Oct 7", time: "21:00", team1: "Khoury", team2: "Roth" },
+  { date: "Wed Oct 7", time: "21:00", team1: "Singer", team2: "Weitz" },
 
-  // Wed Jul 22
-  { date: "Wed Jul 22", time: "19:00", team1: "Hawkins", team2: "Bens" },
-  { date: "Wed Jul 22", time: "19:00", team1: "Spielman", team2: "Rosner" },
-  { date: "Wed Jul 22", time: "20:00", team1: "Jackson", team2: "Weitz" },
-  { date: "Wed Jul 22", time: "20:00", team1: "Tohar", team2: "Shulman" },
-  { date: "Wed Jul 22", time: "21:00", team1: "Kirkley", team2: "Schnipper" },
-  { date: "Wed Jul 22", time: "21:00", team1: "Khoury", team2: "Roth" },
+  // Wed Oct 14
+  { date: "Wed Oct 14", time: "19:00", team1: "Hawkins", team2: "Spizman" },
+  { date: "Wed Oct 14", time: "19:00", team1: "Weitz", team2: "Levine" },
+  { date: "Wed Oct 14", time: "20:00", team1: "Rosner", team2: "Jackson" },
+  { date: "Wed Oct 14", time: "20:00", team1: "Roth", team2: "Tohar" },
+  { date: "Wed Oct 14", time: "21:00", team1: "Kirkley", team2: "Singer" },
+  { date: "Wed Oct 14", time: "21:00", team1: "Spielman", team2: "Khoury" },
 
-  // Wed Jul 29
-  { date: "Wed Jul 29", time: "19:00", team1: "Hawkins", team2: "Weitz" },
-  { date: "Wed Jul 29", time: "19:00", team1: "Schnipper", team2: "Spielman" },
-  { date: "Wed Jul 29", time: "20:00", team1: "Jackson", team2: "Rosner" },
-  { date: "Wed Jul 29", time: "20:00", team1: "Kirkley", team2: "Spizman" },
-  { date: "Wed Jul 29", time: "21:00", team1: "Tohar", team2: "Roth" },
+  // Wed Oct 21
+  { date: "Wed Oct 21", time: "19:00", team1: "Levine", team2: "Hawkins" },
+  { date: "Wed Oct 21", time: "19:00", team1: "Schnipper", team2: "Weitz" },
+  { date: "Wed Oct 21", time: "20:00", team1: "Spielman", team2: "Roth" },
+  { date: "Wed Oct 21", time: "20:00", team1: "Tohar", team2: "Jackson" },
+  { date: "Wed Oct 21", time: "21:00", team1: "Khoury", team2: "Singer" },
+  { date: "Wed Oct 21", time: "21:00", team1: "Kirkley", team2: "Rosner" },
 
-  // Wed Aug 5
-  { date: "Wed Aug 5", time: "19:00", team1: "Schnipper", team2: "Hawkins" },
-  { date: "Wed Aug 5", time: "19:00", team1: "Spizman", team2: "Jackson" },
-  { date: "Wed Aug 5", time: "20:00", team1: "Bens", team2: "Rosner" },
-  { date: "Wed Aug 5", time: "20:00", team1: "Spielman", team2: "Shulman" },
-  { date: "Wed Aug 5", time: "21:00", team1: "Khoury", team2: "Weitz" },
-  { date: "Wed Aug 5", time: "21:00", team1: "Kirkley", team2: "Roth" },
+  // Sun Oct 25
+  { date: "Sun Oct 25", time: "08:30", team1: "Jackson", team2: "Levine" },
+  { date: "Sun Oct 25", time: "08:30", team1: "Spielman", team2: "Tohar" },
+  { date: "Sun Oct 25", time: "09:30", team1: "Spizman", team2: "Khoury" },
+  { date: "Sun Oct 25", time: "09:30", team1: "Weitz", team2: "Hawkins" },
+  { date: "Sun Oct 25", time: "10:30", team1: "Rosner", team2: "Roth" },
+  { date: "Sun Oct 25", time: "10:30", team1: "Singer", team2: "Schnipper" },
 
-  // Sun Aug 9
-  { date: "Sun Aug 9", time: "08:30", team1: "Bens", team2: "Spizman" },
-  { date: "Sun Aug 9", time: "08:30", team1: "Weitz", team2: "Schnipper" },
-  { date: "Sun Aug 9", time: "09:30", team1: "Hawkins", team2: "Spielman" },
-  { date: "Sun Aug 9", time: "09:30", team1: "Rosner", team2: "Tohar" },
-  { date: "Sun Aug 9", time: "10:30", team1: "Roth", team2: "Jackson" },
-  { date: "Sun Aug 9", time: "10:30", team1: "Shulman", team2: "Khoury" },
+  // Wed Oct 28
+  { date: "Wed Oct 28", time: "19:00", team1: "Levine", team2: "Tohar" },
+  { date: "Wed Oct 28", time: "19:00", team1: "Singer", team2: "Spizman" },
+  { date: "Wed Oct 28", time: "20:00", team1: "Roth", team2: "Kirkley" },
+  { date: "Wed Oct 28", time: "20:00", team1: "Schnipper", team2: "Spielman" },
+  { date: "Wed Oct 28", time: "21:00", team1: "Hawkins", team2: "Rosner" },
+  { date: "Wed Oct 28", time: "21:00", team1: "Khoury", team2: "Weitz" },
 
-  // Wed Aug 12
-  { date: "Wed Aug 12", time: "19:00", team1: "Schnipper", team2: "Bens" },
-  { date: "Wed Aug 12", time: "19:00", team1: "Spizman", team2: "Tohar" },
-  { date: "Wed Aug 12", time: "20:00", team1: "Roth", team2: "Rosner" },
-  { date: "Wed Aug 12", time: "20:00", team1: "Spielman", team2: "Weitz" },
-  { date: "Wed Aug 12", time: "21:00", team1: "Khoury", team2: "Hawkins" },
-  { date: "Wed Aug 12", time: "21:00", team1: "Kirkley", team2: "Shulman" },
+  // Sun Nov 1
+  { date: "Sun Nov 1", time: "08:30", team1: "Spizman", team2: "Kirkley" },
+  { date: "Sun Nov 1", time: "08:30", team1: "Tohar", team2: "Khoury" },
+  { date: "Sun Nov 1", time: "09:30", team1: "Levine", team2: "Roth" },
+  { date: "Sun Nov 1", time: "09:30", team1: "Weitz", team2: "Jackson" },
+  { date: "Sun Nov 1", time: "10:30", team1: "Rosner", team2: "Schnipper" },
+  { date: "Sun Nov 1", time: "10:30", team1: "Singer", team2: "Spielman" },
 
-  // Sun Aug 16
-  { date: "Sun Aug 16", time: "08:30", team1: "Jackson", team2: "Bens" },
-  { date: "Sun Aug 16", time: "08:30", team1: "Schnipper", team2: "Rosner" },
-  { date: "Sun Aug 16", time: "09:30", team1: "Spielman", team2: "Kirkley" },
-  { date: "Sun Aug 16", time: "09:30", team1: "Spizman", team2: "Roth" },
-  { date: "Sun Aug 16", time: "10:30", team1: "Shulman", team2: "Hawkins" },
-  { date: "Sun Aug 16", time: "10:30", team1: "Tohar", team2: "Khoury" },
+  // Wed Nov 4
+  { date: "Wed Nov 4", time: "19:00", team1: "Hawkins", team2: "Tohar" },
+  { date: "Wed Nov 4", time: "19:00", team1: "Schnipper", team2: "Spizman" },
+  { date: "Wed Nov 4", time: "20:00", team1: "Jackson", team2: "Spielman" },
+  { date: "Wed Nov 4", time: "20:00", team1: "Kirkley", team2: "Weitz" },
+  { date: "Wed Nov 4", time: "21:00", team1: "Khoury", team2: "Rosner" },
+  { date: "Wed Nov 4", time: "21:00", team1: "Roth", team2: "Singer" },
 
-  // Wed Aug 19
-  { date: "Wed Aug 19", time: "19:00", team1: "Schnipper", team2: "Roth" },
-  { date: "Wed Aug 19", time: "19:00", team1: "Weitz", team2: "Spizman" },
-  { date: "Wed Aug 19", time: "20:00", team1: "Shulman", team2: "Bens" },
-  { date: "Wed Aug 19", time: "20:00", team1: "Tohar", team2: "Spielman" },
-  { date: "Wed Aug 19", time: "21:00", team1: "Khoury", team2: "Jackson" },
-  { date: "Wed Aug 19", time: "21:00", team1: "Kirkley", team2: "Hawkins" },
+  // Sun Nov 8
+  { date: "Sun Nov 8", time: "08:30", team1: "Hawkins", team2: "Roth" },
+  { date: "Sun Nov 8", time: "09:30", team1: "Jackson", team2: "Schnipper" },
+  { date: "Sun Nov 8", time: "09:30", team1: "Tohar", team2: "Kirkley" },
+  { date: "Sun Nov 8", time: "10:30", team1: "Khoury", team2: "Levine" },
+  { date: "Sun Nov 8", time: "10:30", team1: "Spizman", team2: "Rosner" },
 
-  // Sun Aug 23
-  { date: "Sun Aug 23", time: "08:30", team1: "Spielman", team2: "Spizman" },
-  { date: "Sun Aug 23", time: "08:30", team1: "Weitz", team2: "Bens" },
-  { date: "Sun Aug 23", time: "09:30", team1: "Rosner", team2: "Shulman" },
-  { date: "Sun Aug 23", time: "09:30", team1: "Tohar", team2: "Schnipper" },
-  { date: "Sun Aug 23", time: "10:30", team1: "Jackson", team2: "Hawkins" },
-  { date: "Sun Aug 23", time: "10:30", team1: "Khoury", team2: "Kirkley" },
+  // Wed Nov 11
+  { date: "Wed Nov 11", time: "19:00", team1: "Levine", team2: "Spizman" },
+  { date: "Wed Nov 11", time: "19:00", team1: "Schnipper", team2: "Tohar" },
+  { date: "Wed Nov 11", time: "20:00", team1: "Singer", team2: "Jackson" },
+  { date: "Wed Nov 11", time: "20:00", team1: "Spielman", team2: "Kirkley" },
+  { date: "Wed Nov 11", time: "21:00", team1: "Hawkins", team2: "Khoury" },
+  { date: "Wed Nov 11", time: "21:00", team1: "Weitz", team2: "Rosner" },
 
-  // Wed Aug 26
-  { date: "Wed Aug 26", time: "19:00", team1: "Schnipper", team2: "Spizman" },
-  { date: "Wed Aug 26", time: "19:00", team1: "Tohar", team2: "Hawkins" },
-  { date: "Wed Aug 26", time: "20:00", team1: "Rosner", team2: "Kirkley" },
-  { date: "Wed Aug 26", time: "20:00", team1: "Weitz", team2: "Roth" },
-  { date: "Wed Aug 26", time: "21:00", team1: "Khoury", team2: "Bens" },
-  { date: "Wed Aug 26", time: "21:00", team1: "Shulman", team2: "Jackson" },
+  // Wed Nov 18
+  { date: "Wed Nov 18", time: "19:00", team1: "Levine", team2: "Schnipper" },
+  { date: "Wed Nov 18", time: "19:00", team1: "Spizman", team2: "Weitz" },
+  { date: "Wed Nov 18", time: "20:00", team1: "Rosner", team2: "Spielman" },
+  { date: "Wed Nov 18", time: "20:00", team1: "Roth", team2: "Jackson" },
+  { date: "Wed Nov 18", time: "21:00", team1: "Kirkley", team2: "Khoury" },
+  { date: "Wed Nov 18", time: "21:00", team1: "Singer", team2: "Hawkins" },
 ];
 
 export function getTeamPlayers(team: string): Player[] {
@@ -238,9 +238,9 @@ export interface PlayoffRound {
 }
 
 export const PLAYOFFS: PlayoffRound[] = [
-  { round: "First Round", date: "Wed Sep 2" },
-  { round: "Quarterfinals", date: "Wed Sep 9" },
-  { round: "Semifinals", date: "Wed Sep 16" },
+  { round: "First Round", date: "Wed Dec 2" },
+  { round: "Quarterfinals", date: "Wed Dec 9" },
+  { round: "Semifinals", date: "Wed Dec 16" },
   { round: "Championship", date: "TBA" },
 ];
 

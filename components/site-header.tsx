@@ -16,7 +16,7 @@ export function SiteHeader({
   return (
     <header className="pt-11 pb-5 px-5 text-center">
       <p className="text-[0.65rem] uppercase tracking-[0.32em] text-muted-foreground/90 mb-2.5">
-        JCC Basketball &middot; Summer 2026
+        JCC Basketball &middot; Fall 2026
       </p>
       <h1 className="font-display text-[2.5rem] sm:text-5xl leading-none tracking-[0.01em]">
         {onWordmark ? (

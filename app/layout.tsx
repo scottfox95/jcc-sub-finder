@@ -18,10 +18,10 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL("https://jcc-sub-finder.tenenbaum.ai"),
   title: "JCC Sub Finder",
-  description: "Find eligible substitutes for JCC Basketball League - Summer 2026",
+  description: "Find eligible substitutes for JCC Basketball League - Fall 2026",
   openGraph: {
     title: "JCC Sub Finder",
-    description: "Find eligible substitutes for JCC Basketball League - Summer 2026",
+    description: "Find eligible substitutes for JCC Basketball League - Fall 2026",
     url: "https://jcc-sub-finder.tenenbaum.ai",
     siteName: "JCC Sub Finder",
     type: "website",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "JCC Sub Finder",
-    description: "Find eligible substitutes for JCC Basketball League - Summer 2026",
+    description: "Find eligible substitutes for JCC Basketball League - Fall 2026",
   },
 };
 
