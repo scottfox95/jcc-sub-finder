@@ -25,6 +25,10 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  --default-transition-duration: 140ms;
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-overshoot: cubic-bezier(0.35, 1.55, 0.65, 1);
   --color-orange: #FF6B2B;
   --color-orange-bright: #FF7E44;
   --color-orange-deep: #E2531A;
@@ -60,16 +64,22 @@
   --input: rgba(255, 255, 255, 0.1);
   --ring: #FF6B2B;
 
-  /* House easing */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
-  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  /* House easing + durations (browser default ease is banned) */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-overshoot: cubic-bezier(0.35, 1.55, 0.65, 1);
+  --dur-fast: 140ms;
+  --dur-base: 280ms;
+  --dur-slow: 420ms;
 
-  /* Layered shadows, tinted to the near-black base (never pure black) */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-card: 0 1px 1px rgba(0, 0, 0, 0.3), 0 6px 16px -8px rgba(0, 0, 0, 0.55);
-  --shadow-lift: 0 1px 1px rgba(0, 0, 0, 0.3), 0 14px 32px -12px rgba(0, 0, 0, 0.65),
-    0 0 0 1px rgba(255, 107, 43, 0.14);
+  /* Layered light, tinted to the near-black base. A hairline ring replaces the
+     1px border; a top-edge highlight + contact + ambient blur give depth. */
+  --hairline: rgba(255, 255, 255, 0.07);
+  --hairline-hot: rgba(255, 107, 43, 0.4);
+  --shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 0 0 0.5px rgba(255, 255, 255, 0.09),
+    0 1px 2px rgba(0, 0, 0, 0.35), 0 6px 18px -8px rgba(0, 0, 0, 0.55);
+  --shadow-lift: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 0 0 0.5px var(--hairline-hot),
+    0 2px 4px rgba(0, 0, 0, 0.35), 0 14px 32px -12px rgba(0, 0, 0, 0.65),
+    0 10px 30px -16px rgba(255, 107, 43, 0.4);
 }
 
 @layer base {
@@ -109,75 +119,108 @@ body::after {
   background-size: 220px 220px;
 }
 
-/* Animations */
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Animations: entrances focus into place (fade + 6px rise + clearing 2px blur) */
+@keyframes enter {
+  from { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; filter: blur(2px); }
+  to { opacity: 1; filter: blur(0); }
 }
 @keyframes countUp {
   from { opacity: 0; transform: translateY(6px) scale(0.94); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+@keyframes courtDraw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes courtLine {
+  to { transform: scaleX(1); }
+}
+@keyframes livePing {
+  0% { transform: scale(1); opacity: 0.7; }
+  80%, 100% { transform: scale(2.6); opacity: 0; }
+}
 
-.animate-slide-up { animation: slideUp 0.45s var(--ease-out-expo) both; }
-.animate-fade-in { animation: fadeIn 0.35s var(--ease-out-quart) both; }
-.animate-count-up { animation: countUp 0.5s var(--ease-out-expo) both; }
+.animate-enter { animation: enter var(--dur-base) var(--ease-smooth) both; }
+.animate-fade-in { animation: fadeIn var(--dur-base) var(--ease-smooth) both; }
+.animate-count-up { animation: countUp var(--dur-slow) var(--ease-overshoot) both; }
+.animate-live-ping { animation: livePing 1.8s var(--ease-smooth) infinite; }
 
-/* Stagger children on entrance */
-.stagger-children > * { animation: slideUp 0.4s var(--ease-out-expo) both; }
+/* Stagger children on entrance (30ms steps) */
+.stagger-children > * { animation: enter var(--dur-base) var(--ease-smooth) both; }
 .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
-.stagger-children > *:nth-child(2) { animation-delay: 40ms; }
-.stagger-children > *:nth-child(3) { animation-delay: 80ms; }
-.stagger-children > *:nth-child(4) { animation-delay: 120ms; }
-.stagger-children > *:nth-child(5) { animation-delay: 160ms; }
-.stagger-children > *:nth-child(6) { animation-delay: 200ms; }
-.stagger-children > *:nth-child(7) { animation-delay: 240ms; }
-.stagger-children > *:nth-child(8) { animation-delay: 280ms; }
-.stagger-children > *:nth-child(9) { animation-delay: 320ms; }
-.stagger-children > *:nth-child(10) { animation-delay: 360ms; }
-.stagger-children > *:nth-child(11) { animation-delay: 400ms; }
-.stagger-children > *:nth-child(12) { animation-delay: 440ms; }
-.stagger-children > *:nth-child(13) { animation-delay: 480ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 30ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 60ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 90ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 150ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 180ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 210ms; }
+.stagger-children > *:nth-child(9) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(10) { animation-delay: 270ms; }
+.stagger-children > *:nth-child(11) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(12) { animation-delay: 330ms; }
+.stagger-children > *:nth-child(13) { animation-delay: 360ms; }
 
-/* Selectable surface: subtle top-lit gradient, hairline edge, tactile hover/press */
+/* Center circle + half-court line behind the wordmark, drawn in once on load */
+.court ellipse {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: courtDraw 1.2s var(--ease-smooth) 0.15s forwards;
+}
+.court-line {
+  transform: scaleX(0);
+  animation: courtLine 0.9s var(--ease-smooth) 0.55s forwards;
+}
+
+/* Hairline edge for small controls (replaces 1px borders) */
+.hairline { box-shadow: inset 0 0 0 1px var(--hairline); }
+.hairline-interactive:hover { box-shadow: inset 0 0 0 1px var(--hairline-hot); }
+
+/* Selectable surface: top-lit gradient, hairline ring, layered light, tactile press */
 .surface {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0) 42%),
     var(--card);
   box-shadow: var(--shadow-card);
   transition:
-    transform 0.18s var(--ease-standard),
-    border-color 0.18s var(--ease-standard),
-    box-shadow 0.18s var(--ease-standard),
-    background-color 0.18s var(--ease-standard);
+    transform var(--dur-fast) var(--ease-smooth),
+    box-shadow var(--dur-base) var(--ease-smooth),
+    opacity var(--dur-base) var(--ease-smooth);
 }
 .surface-interactive:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-lift);
-  border-color: rgba(255, 107, 43, 0.3);
 }
 .surface-interactive:active {
-  transform: translateY(0) scale(0.994);
+  transform: scale(0.98);
   box-shadow: var(--shadow-card);
+}
+/* The next game night / next game gets a warm ring */
+.surface-next {
+  box-shadow: var(--shadow-card), 0 0 0 0.5px var(--hairline-hot), 0 10px 30px -18px rgba(255, 107, 43, 0.45);
 }
 
 /* Reduced motion: collapse entrance + physical motion to instant */
 @media (prefers-reduced-motion: reduce) {
-  .animate-slide-up,
-  .animate-fade-in,
-  .animate-count-up,
-  .stagger-children > * {
-    animation: none !important;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-  .surface,
+  .court ellipse {
+    stroke-dashoffset: 0;
+  }
+  .court-line {
+    transform: none;
+  }
   .surface-interactive:hover,
   .surface-interactive:active {
     transform: none !important;
-    transition: none !important;
   }
 }
 

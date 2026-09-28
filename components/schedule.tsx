@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ThinkingOrb } from "thinking-orbs";
 import {
   TEAM_NAMES,
   PLAYOFFS,
@@ -11,7 +12,10 @@ import {
   formatTime,
 } from "@/lib/data";
 import { buildTeamCalendar, teamCalendarFilename } from "@/lib/calendar";
+import { nextGameNight } from "@/lib/game-time";
+import { useNow } from "@/lib/use-now";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { CalendarPlus, Download, Check } from "lucide-react";
 
 function fmtDate(d: string): string {
@@ -27,6 +31,9 @@ function byeDateForTeam(team: string, dates: string[]): string {
 export function Schedule() {
   const [team, setTeam] = useState<string | null>(null);
   const dates = getGameDates();
+  const now = useNow();
+  const next = now == null ? null : nextGameNight(now);
+  const nextIdx = next ? dates.indexOf(next.date) : now == null ? -1 : dates.length;
 
   return (
     <div className="relative z-10 min-h-screen flex flex-col">
@@ -59,7 +66,23 @@ export function Schedule() {
 
         <div className="space-y-4 stagger-children">
           {dates.map((date, i) => (
-            <NightCard key={date} date={date} gameNum={i + 1} highlight={team} />
+            <NightCard
+              key={date}
+              date={date}
+              gameNum={i + 1}
+              highlight={team}
+              status={
+                nextIdx < 0
+                  ? "upcoming"
+                  : i < nextIdx
+                    ? "played"
+                    : i === nextIdx
+                      ? next?.live
+                        ? "live"
+                        : "next"
+                      : "upcoming"
+              }
+            />
           ))}
         </div>
 
@@ -68,7 +91,7 @@ export function Schedule() {
           <h2 className="font-display text-lg tracking-wide uppercase text-foreground/80 mb-3">
             Playoffs
           </h2>
-          <div className="surface rounded-xl border border-border/60 divide-y divide-border/40 overflow-hidden">
+          <div className="surface rounded-xl divide-y divide-border/40 overflow-hidden">
             {PLAYOFFS.map((p) => (
               <div key={p.round} className="flex items-center justify-between px-4 py-3">
                 <span className="text-sm text-foreground/90">{p.round}</span>
@@ -85,16 +108,19 @@ export function Schedule() {
           listing order only, not home/away.
         </p>
       </main>
+      <SiteFooter />
     </div>
   );
 }
 
 function CalendarCTA({ team }: { team: string | null }) {
-  const [added, setAdded] = useState(false);
+  const [phase, setPhase] = useState<"idle" | "composing" | "done">("idle");
   const gameCount = team ? getTeamGames(team).length : 0;
 
   function handleAdd() {
-    if (!team) return;
+    if (!team || phase !== "idle") return;
+    // Download inside the tap (mobile Safari needs the user gesture), then play
+    // a short "composing" beat before confirming.
     const ics = buildTeamCalendar(team);
     const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -105,14 +131,15 @@ function CalendarCTA({ team }: { team: string | null }) {
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 2000);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 4000);
+    setPhase("composing");
+    setTimeout(() => setPhase("done"), 700);
+    setTimeout(() => setPhase("idle"), 4700);
   }
 
   return (
-    <div className="surface rounded-xl border border-border/60 px-4 py-4 mb-6">
+    <div className="surface rounded-xl px-4 py-4 mb-6">
       <div className="flex items-center gap-3">
-        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-orange/10 border border-orange/20 shrink-0">
+        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-orange/10 shadow-[inset_0_0_0_1px_rgba(255,107,43,0.2)] shrink-0">
           <CalendarPlus className="w-5 h-5 text-orange" />
         </div>
         <div className="min-w-0 flex-1">
@@ -135,18 +162,26 @@ function CalendarCTA({ team }: { team: string | null }) {
       {team && (
         <button
           onClick={handleAdd}
-          disabled={added}
+          disabled={phase !== "idle"}
+          aria-live="polite"
           className={
-            "mt-3.5 w-full h-11 rounded-lg flex items-center justify-center gap-2 text-sm font-semibold transition-all duration-200 active:scale-[0.98] " +
-            (added
-              ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25"
-              : "bg-orange text-background shadow-[0_1px_8px_-2px_rgba(255,107,43,0.6)] hover:brightness-105")
+            "mt-3.5 w-full h-11 rounded-lg flex items-center justify-center gap-2 text-sm font-semibold transition-all duration-[var(--dur-base)] active:scale-[0.98] " +
+            (phase === "done"
+              ? "bg-emerald-500/15 text-emerald-400 shadow-[inset_0_0_0_1px_rgba(16,185,129,0.25)]"
+              : phase === "composing"
+                ? "bg-orange/15 text-orange shadow-[inset_0_0_0_1px_rgba(255,107,43,0.3)]"
+                : "bg-orange text-background shadow-[0_1px_8px_-2px_rgba(255,107,43,0.6)] hover:brightness-105")
           }
         >
-          {added ? (
+          {phase === "done" ? (
             <>
               <Check className="w-4 h-4" />
               Downloaded — open the file to add
+            </>
+          ) : phase === "composing" ? (
+            <>
+              <ThinkingOrb state="composing" size={20} color="#FF6B2B" aria-hidden="true" />
+              Building {team}&rsquo;s calendar&hellip;
             </>
           ) : (
             <>
@@ -171,66 +206,86 @@ function NightCard({
   date,
   gameNum,
   highlight,
+  status,
 }: {
   date: string;
   gameNum: number;
   highlight: string | null;
+  status: "played" | "live" | "next" | "upcoming";
 }) {
   const games = getGamesByDate(date);
   const byes = getByeTeams(date);
   const teamOnBye = highlight != null && byes.includes(highlight);
 
   return (
-    <section className="surface rounded-xl border border-border/60 overflow-hidden">
-      <div className="flex items-center justify-between gap-2 px-4 py-3 border-b border-border/40">
-        <div className="flex items-baseline gap-2.5 min-w-0">
-          <span className="font-display text-orange text-sm shrink-0 tracking-wide">
-            GAME {gameNum}
-          </span>
-          <span className="text-sm font-medium text-foreground truncate">{fmtDate(date)}</span>
-        </div>
-        {byes.length > 0 && (
-          <span
-            className={
-              "text-[0.68rem] px-2 py-1 rounded-md shrink-0 border " +
-              (teamOnBye
-                ? "bg-orange/15 text-orange border-orange/25 font-semibold"
-                : "bg-secondary/60 text-muted-foreground border-border/40")
-            }
-          >
-            Bye: {byes.join(", ")}
-          </span>
-        )}
-      </div>
-
-      <div className="divide-y divide-border/30">
-        {games.map((g, idx) => {
-          const hl =
-            highlight != null && (g.team1 === highlight || g.team2 === highlight);
-          return (
-            <div
-              key={idx}
+    <section
+      className={
+        "surface rounded-xl overflow-hidden" +
+        (status === "next" || status === "live" ? " surface-next" : "")
+      }
+    >
+      <div className={status === "played" ? "opacity-50" : undefined}>
+        <div className="flex items-center justify-between gap-2 px-4 py-3 border-b border-border/40">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="font-display text-orange text-sm shrink-0 tracking-wide">
+              GAME {gameNum}
+            </span>
+            <span className="text-sm font-medium text-foreground truncate">{fmtDate(date)}</span>
+            {status === "next" && (
+              <span className="px-1.5 py-0.5 rounded-md bg-orange/15 text-orange text-[0.6rem] font-semibold uppercase tracking-[0.12em] shrink-0">
+                Next up
+              </span>
+            )}
+            {status === "live" && (
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-orange/15 text-orange text-[0.6rem] font-semibold uppercase tracking-[0.12em] shrink-0">
+                <span className="w-1 h-1 rounded-full bg-orange" />
+                Live
+              </span>
+            )}
+          </div>
+          {byes.length > 0 && (
+            <span
               className={
-                "flex items-center gap-3 pr-4 py-2.5 border-l-2 transition-colors duration-200 " +
-                (hl
-                  ? "bg-orange/[0.07] border-orange pl-[calc(1rem-2px)]"
-                  : "border-transparent pl-4")
+                "text-[0.68rem] px-2 py-1 rounded-md shrink-0 " +
+                (teamOnBye
+                  ? "bg-orange/15 text-orange font-semibold shadow-[inset_0_0_0_1px_rgba(255,107,43,0.25)]"
+                  : "bg-secondary/60 text-muted-foreground hairline")
               }
             >
-              <span className="text-xs tabular-nums text-muted-foreground w-[4.75rem] shrink-0">
-                {formatTime(g.time)}
-              </span>
-              <span
+              Bye: {byes.join(", ")}
+            </span>
+          )}
+        </div>
+
+        <div className="divide-y divide-border/30">
+          {games.map((g, idx) => {
+            const hl =
+              highlight != null && (g.team1 === highlight || g.team2 === highlight);
+            return (
+              <div
+                key={idx}
                 className={
-                  "text-sm flex-1 " + (hl ? "text-foreground font-medium" : "text-foreground/80")
+                  "flex items-center gap-3 pr-4 py-2.5 border-l-2 transition-colors duration-[var(--dur-base)] " +
+                  (hl
+                    ? "bg-orange/[0.07] border-orange pl-[calc(1rem-2px)]"
+                    : "border-transparent pl-4")
                 }
               >
-                {g.team1} <span className="text-muted-foreground/50 font-normal">vs</span>{" "}
-                {g.team2}
-              </span>
-            </div>
-          );
-        })}
+                <span className="text-xs tabular-nums text-muted-foreground w-[4.75rem] shrink-0">
+                  {formatTime(g.time)}
+                </span>
+                <span
+                  className={
+                    "text-sm flex-1 " + (hl ? "text-foreground font-medium" : "text-foreground/80")
+                  }
+                >
+                  {g.team1} <span className="text-muted-foreground/50 font-normal">vs</span>{" "}
+                  {g.team2}
+                </span>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
@@ -249,10 +304,10 @@ function FilterPill({
     <button
       onClick={onClick}
       className={
-        "px-3.5 py-1.5 rounded-full text-xs whitespace-nowrap transition-all duration-150 border active:scale-[0.96] " +
+        "px-3.5 py-1.5 rounded-full text-xs whitespace-nowrap transition-all active:scale-[0.98] " +
         (active
-          ? "bg-orange text-background font-semibold border-orange shadow-[0_1px_8px_-2px_rgba(255,107,43,0.55)]"
-          : "bg-card/60 text-muted-foreground border-border/50 hover:text-foreground hover:border-border")
+          ? "bg-orange text-background font-semibold shadow-[0_1px_8px_-2px_rgba(255,107,43,0.55)]"
+          : "bg-card/60 text-muted-foreground hairline hover:text-foreground hairline-interactive")
       }
     >
       {label}

@@ -1,15 +1,20 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
+import { ThinkingOrb } from "thinking-orbs";
 import {
   TEAM_NAMES,
+  PLAYERS,
   getTeamPlayers,
   getTeamGames,
   getOpponent,
   formatTime,
 } from "@/lib/data";
 import { findEligibleSubs, type EligibleSub } from "@/lib/find-subs";
+import { isGameOver } from "@/lib/game-time";
+import { useNow } from "@/lib/use-now";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import {
   Phone,
   Mail,
@@ -22,10 +27,26 @@ import {
 
 function RankBadge({ ranking }: { ranking: number }) {
   return (
-    <span className="inline-flex items-center justify-center min-w-[2.25rem] h-7 px-2 rounded-md bg-orange/10 text-orange font-semibold text-xs tabular-nums tracking-wide border border-orange/20">
+    <span className="inline-flex items-center justify-center min-w-[2.25rem] h-7 px-2 rounded-md bg-orange/10 text-orange font-semibold text-xs tabular-nums tracking-wide shadow-[inset_0_0_0_1px_rgba(255,107,43,0.2)]">
       {ranking}
     </span>
   );
+}
+
+/** Rolls 0 → value on mount (ease-out quint ≈ --ease-smooth), instant under reduced motion. */
+function RollingCount({ value, durationMs = 650 }: { value: number; durationMs?: number }) {
+  const [shown, setShown] = useState(0);
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const t0 = performance.now();
+    let raf = requestAnimationFrame(function step(t) {
+      const p = reduce ? 1 : Math.min(1, (t - t0) / durationMs);
+      setShown(Math.round(value * (1 - Math.pow(1 - p, 5))));
+      if (p < 1) raf = requestAnimationFrame(step);
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [value, durationMs]);
+  return <>{shown}</>;
 }
 
 function SectionLabel({
@@ -79,7 +100,7 @@ function CompletedStep({
       )}
       <button
         onClick={onClear}
-        className="ml-auto text-xs text-muted-foreground hover:text-orange transition-colors shrink-0 px-2 py-1 rounded hover:bg-orange/5"
+        className="ml-auto text-xs text-muted-foreground hover:text-orange transition-colors shrink-0 px-2 py-1 rounded hover:bg-orange/5 active:scale-[0.98]"
       >
         Change
       </button>
@@ -92,6 +113,9 @@ export function SubFinder() {
   const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [scanning, setScanning] = useState(false);
+  const scanTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const now = useNow();
 
   const teamPlayers = useMemo(
     () => (selectedTeam ? getTeamPlayers(selectedTeam) : []),
@@ -121,26 +145,52 @@ export function SubFinder() {
     return findEligibleSubs(selectedTeam, selectedPlayer, selectedDate);
   }, [selectedTeam, selectedPlayer, selectedDate]);
 
+  const nextGameDate = useMemo(
+    () =>
+      now == null
+        ? null
+        : teamGames.find((g) => !isGameOver(g.date, g.time, now))?.date ?? null,
+    [teamGames, now]
+  );
+
+  const stopScan = useCallback(() => {
+    if (scanTimer.current) clearTimeout(scanTimer.current);
+    setScanning(false);
+  }, []);
+
+  /** Picking a game runs a short "scanning the league" beat before results reveal. */
+  const selectDate = useCallback((date: string) => {
+    setSelectedDate(date);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (scanTimer.current) clearTimeout(scanTimer.current);
+    setScanning(true);
+    scanTimer.current = setTimeout(() => setScanning(false), 900);
+  }, []);
+
   const clearTeam = useCallback(() => {
+    stopScan();
     setSelectedTeam(null);
     setSelectedPlayer(null);
     setSelectedDate(null);
-  }, []);
+  }, [stopScan]);
 
   const clearPlayer = useCallback(() => {
+    stopScan();
     setSelectedPlayer(null);
     setSelectedDate(null);
-  }, []);
+  }, [stopScan]);
 
   const clearDate = useCallback(() => {
+    stopScan();
     setSelectedDate(null);
-  }, []);
+  }, [stopScan]);
 
   const reset = useCallback(() => {
+    stopScan();
     setSelectedTeam(null);
     setSelectedPlayer(null);
     setSelectedDate(null);
-  }, []);
+  }, [stopScan]);
 
   const copyToClipboard = useCallback((text: string, id: string) => {
     navigator.clipboard.writeText(text);
@@ -197,14 +247,14 @@ export function SubFinder() {
 
         {/* Step 1: Team Selection */}
         {showTeamSelector && (
-          <section className="animate-slide-up">
+          <section className="animate-enter">
             <SectionLabel step={1} label="Select Your Team" />
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 stagger-children">
               {TEAM_NAMES.map((team) => (
                 <button
                   key={team}
                   onClick={() => setSelectedTeam(team)}
-                  className="surface surface-interactive h-14 rounded-xl border border-border/60 text-sm font-medium text-foreground/85 hover:text-foreground"
+                  className="surface surface-interactive h-14 rounded-xl text-sm font-medium text-foreground/85 hover:text-foreground"
                 >
                   {team}
                 </button>
@@ -215,14 +265,14 @@ export function SubFinder() {
 
         {/* Step 2: Player Selection */}
         {showPlayerSelector && (
-          <section className="animate-slide-up">
+          <section className="animate-enter">
             <SectionLabel step={2} label="Who's Out?" />
             <div className="space-y-2 stagger-children">
               {teamPlayers.map((player) => (
                 <button
                   key={player.name}
                   onClick={() => setSelectedPlayer(player.name)}
-                  className="surface surface-interactive group w-full flex items-center gap-4 px-4 py-3.5 rounded-xl border border-border/60 text-left"
+                  className="surface surface-interactive group w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-left"
                 >
                   <RankBadge ranking={player.ranking} />
                   <span className="text-sm font-medium text-foreground/85 group-hover:text-foreground transition-colors">
@@ -236,39 +286,84 @@ export function SubFinder() {
 
         {/* Step 3: Date Selection */}
         {showDateSelector && selectedTeam && (
-          <section className="animate-slide-up">
+          <section className="animate-enter">
             <SectionLabel step={3} label="Which Game?" />
             <div className="space-y-2 stagger-children">
-              {teamGames.map((game) => (
-                <button
-                  key={game.date}
-                  onClick={() => setSelectedDate(game.date)}
-                  className="surface surface-interactive group w-full flex items-center gap-4 px-4 py-3.5 rounded-xl border border-border/60 text-left"
-                >
-                  <div className="flex flex-col min-w-0 flex-1">
-                    <span className="text-sm font-medium text-foreground/85 group-hover:text-foreground transition-colors">
-                      {game.date}
-                    </span>
-                    <span className="text-xs text-muted-foreground mt-0.5">
-                      {formatTime(game.time)} &middot; vs{" "}
-                      {getOpponent(game, selectedTeam)}
-                    </span>
-                  </div>
-                  <ChevronRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-orange group-hover:translate-x-0.5 transition-all shrink-0" />
-                </button>
-              ))}
+              {teamGames.map((game) => {
+                const played = now != null && isGameOver(game.date, game.time, now);
+                const isNext = game.date === nextGameDate;
+                return (
+                  <button
+                    key={game.date}
+                    onClick={() => selectDate(game.date)}
+                    className={
+                      "surface surface-interactive group w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-left" +
+                      (isNext ? " surface-next" : "")
+                    }
+                  >
+                    <div className="flex flex-col min-w-0 flex-1">
+                      <span
+                        className={
+                          "flex items-center gap-2 text-sm font-medium group-hover:text-foreground transition-colors " +
+                          (played ? "text-foreground/40" : "text-foreground/85")
+                        }
+                      >
+                        {game.date}
+                        {isNext && (
+                          <span className="px-1.5 py-0.5 rounded-md bg-orange/15 text-orange text-[0.6rem] font-semibold uppercase tracking-[0.12em]">
+                            Next up
+                          </span>
+                        )}
+                        {played && (
+                          <span className="text-[0.6rem] uppercase tracking-[0.12em] text-muted-foreground/60">
+                            Played
+                          </span>
+                        )}
+                      </span>
+                      <span
+                        className={
+                          "text-xs mt-0.5 " +
+                          (played ? "text-muted-foreground/50" : "text-muted-foreground")
+                        }
+                      >
+                        {formatTime(game.time)} &middot; vs{" "}
+                        {getOpponent(game, selectedTeam)}
+                      </span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-orange group-hover:translate-x-0.5 transition-all shrink-0" />
+                  </button>
+                );
+              })}
             </div>
           </section>
         )}
 
-        {/* Step 4: Results */}
-        {showResults && (
-          <section className="animate-slide-up">
+        {/* Step 4a: scanning beat */}
+        {showResults && scanning && selectedGameData && (
+          <section
+            role="status"
+            aria-live="polite"
+            className="animate-enter flex flex-col items-center text-center py-14"
+          >
+            <ThinkingOrb state="searching" size={64} color="#FF6B2B" aria-label="Searching for subs" />
+            <p className="mt-5 font-display text-lg tracking-wide uppercase text-foreground/80">
+              Scanning the league
+            </p>
+            <p className="mt-1.5 text-xs text-muted-foreground">
+              {PLAYERS.length} players &middot; skipping teams on court at{" "}
+              {formatTime(selectedGameData.time)}
+            </p>
+          </section>
+        )}
+
+        {/* Step 4b: Results */}
+        {showResults && !scanning && (
+          <section className="animate-enter">
             {/* Results count header */}
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-baseline gap-3">
                 <span className="font-display text-3xl text-orange animate-count-up tabular-nums">
-                  {eligibleSubs.length}
+                  <RollingCount value={eligibleSubs.length} />
                 </span>
                 <span className="font-display text-lg tracking-wide uppercase text-foreground/60">
                   {eligibleSubs.length === 1 ? "Sub Available" : "Subs Available"}
@@ -276,7 +371,7 @@ export function SubFinder() {
               </div>
               <button
                 onClick={reset}
-                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-orange transition-colors px-2.5 py-1.5 rounded-md hover:bg-orange/5"
+                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-orange transition-colors px-2.5 py-1.5 rounded-md hover:bg-orange/5 active:scale-[0.98]"
               >
                 <RotateCcw className="w-3 h-3" />
                 Reset
@@ -284,7 +379,8 @@ export function SubFinder() {
             </div>
 
             {eligibleSubs.length === 0 ? (
-              <div className="text-center py-12 animate-fade-in">
+              <div className="flex flex-col items-center text-center py-12 animate-fade-in">
+                <ThinkingOrb state="breathing" size={32} theme="dark" aria-hidden="true" className="mb-4 opacity-60" />
                 <p className="text-muted-foreground text-sm">
                   No eligible subs found at this ranking for this time slot.
                 </p>
@@ -304,6 +400,7 @@ export function SubFinder() {
           </section>
         )}
       </main>
+      <SiteFooter />
     </div>
   );
 }
@@ -321,12 +418,12 @@ function SubCard({
   const emailId = `email-${sub.name}`;
 
   const actionBtn =
-    "flex items-center justify-center gap-1.5 h-8 px-3 rounded-lg bg-secondary/60 border border-border/40 text-xs text-muted-foreground hover:text-orange hover:border-orange/25 hover:bg-orange/5 active:scale-[0.97] transition-all duration-150";
+    "flex items-center justify-center gap-1.5 h-8 px-3 rounded-lg bg-secondary/60 hairline hairline-interactive text-xs text-muted-foreground hover:text-orange hover:bg-orange/5 active:scale-[0.98] transition-all";
   const iconBtn =
-    "flex items-center justify-center w-8 h-8 rounded-lg bg-secondary/60 border border-border/40 text-muted-foreground hover:text-orange hover:border-orange/25 hover:bg-orange/5 active:scale-[0.97] transition-all duration-150";
+    "flex items-center justify-center w-8 h-8 rounded-lg bg-secondary/60 hairline hairline-interactive text-muted-foreground hover:text-orange hover:bg-orange/5 active:scale-[0.98] transition-all";
 
   return (
-    <div className="surface rounded-xl border border-border/60 px-4 py-4 space-y-3.5">
+    <div className="surface rounded-xl px-4 py-4 space-y-3.5">
       {/* Name + team + ranking */}
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
@@ -341,7 +438,7 @@ function SubCard({
               Playing @ {formatTime(sub.ownGame.time)} vs {sub.ownGame.opponent}
             </p>
           ) : (
-            <span className="inline-flex items-center gap-1.5 mt-2 px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-[0.7rem] font-medium text-emerald-400">
+            <span className="inline-flex items-center gap-1.5 mt-2 px-2 py-0.5 rounded-md bg-emerald-500/10 shadow-[inset_0_0_0_1px_rgba(16,185,129,0.2)] text-[0.7rem] font-medium text-emerald-400">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               Bye this week
             </span>

@@ -1,21 +1,15 @@
-import { getTeamGames } from "./data";
+import { getTeamGames, SEASON_NAME, SEASON_YEAR } from "./data";
 
 /**
  * Generates an iCalendar (.ics) file for a single team's regular-season games.
  *
  * The schedule in `data.ts` stores dates as weekday-less-of-year strings
  * ("Wed Jul 8") with no year, and times as local wall-clock ("19:00"). The
- * league runs Fall 2026 in Atlanta (Eastern Time), so every game is anchored
- * to 2026 in the America/New_York zone. A VTIMEZONE block ships with the file
+ * league plays in Atlanta (Eastern Time), so every game is anchored to
+ * SEASON_YEAR in the America/New_York zone. A VTIMEZONE block ships with the file
  * so the events display at the correct local time in any calendar app,
  * regardless of the viewer's own timezone.
  */
-
-/** The league season year. All games are anchored to this year. */
-const SEASON_YEAR = 2026;
-
-/** Season name shown in calendar titles and filenames. */
-const SEASON_NAME = "Fall";
 
 /** IANA timezone for the league (Atlanta). */
 const TZID = "America/New_York";

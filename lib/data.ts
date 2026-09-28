@@ -1,3 +1,7 @@
+/** Current season. Update both when rolling the app forward. */
+export const SEASON_NAME = "Fall";
+export const SEASON_YEAR = 2026;
+
 export type Ranking = 100 | 96 | 94 | 90 | 88 | 86 | 84 | 82 | 80;
 
 export interface Player {
