@@ -164,10 +164,10 @@ export const SCHEDULE: Game[] = [
   // Sun Oct 25
   { date: "Sun Oct 25", time: "08:30", team1: "Jackson", team2: "Levine" },
   { date: "Sun Oct 25", time: "08:30", team1: "Spielman", team2: "Tohar" },
+  { date: "Sun Oct 25", time: "09:30", team1: "Rosner", team2: "Roth" },
   { date: "Sun Oct 25", time: "09:30", team1: "Spizman", team2: "Khoury" },
-  { date: "Sun Oct 25", time: "09:30", team1: "Weitz", team2: "Hawkins" },
-  { date: "Sun Oct 25", time: "10:30", team1: "Rosner", team2: "Roth" },
   { date: "Sun Oct 25", time: "10:30", team1: "Singer", team2: "Schnipper" },
+  { date: "Sun Oct 25", time: "10:30", team1: "Weitz", team2: "Hawkins" },
 
   // Wed Oct 28
   { date: "Wed Oct 28", time: "19:00", team1: "Levine", team2: "Tohar" },
