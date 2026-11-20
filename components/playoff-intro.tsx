@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { PLAYOFFS, SEASON_NAME, SEASON_YEAR, TEAM_NAMES, formatTime } from "@/lib/data";
+import { SEASON_NAME, SEASON_YEAR, formatTime } from "@/lib/data";
 import { FIRST_ROUND, INTRO_SEEN_KEY, getFirstRound, getFirstRoundByes } from "@/lib/playoffs";
 
 /**
@@ -15,11 +15,11 @@ import { FIRST_ROUND, INTRO_SEEN_KEY, getFirstRound, getFirstRoundByes } from "@
  * which hides it via CSS. Pure CSS/SVG: nothing extra to download.
  *
  * Timeline (ms from first paint): lights 0–1060 · skyline 150–1150 ·
- * court 250–1300 · eyebrow 300 · letters 450–1385 · hit 1350 · reel 1500–4140 ·
- * land 4140 · tagline 4300 · exit 5100 (+460 leave). Keep in sync with globals.css.
+ * court 250–1300 · eyebrow 300 · letters 450–1385 · hit 1350 · round label 1400 ·
+ * rows drop 1550–2700 (170 apart) · exit 4600 (+460 leave). Keep in sync with globals.css.
  */
 
-const AUTO_EXIT_MS = 5100;
+const AUTO_EXIT_MS = 4600;
 const REDUCED_EXIT_MS = 2400;
 const LEAVE_MS = 460;
 
@@ -28,9 +28,8 @@ const LETTER_START = 450;
 const LETTER_STEP = 45;
 const MATCHUPS = getFirstRound();
 const BYES = getFirstRoundByes();
-const REEL_START = 1500;
-const REEL_STEP = 440;
-const LAND_AT = REEL_START + REEL_STEP * (MATCHUPS.length + (BYES.length ? 1 : 0));
+const LIST_START = 1550;
+const LIST_STEP = 170;
 
 export function PlayoffIntro() {
   const [phase, setPhase] = useState<"play" | "leave" | "done">("play");
@@ -131,38 +130,39 @@ export function PlayoffIntro() {
         </h2>
         <span className="pi-rule" aria-hidden="true" />
 
-        {/* Broadcast reel */}
-        <div className="pi-reel" aria-hidden="true">
+        {/* First-round card: each matchup drops in under the last and stays */}
+        <p className="pi-round" style={{ animationDelay: `${LIST_START - 150}ms` }}>
+          {FIRST_ROUND.round} &middot; {FIRST_ROUND.date}
+        </p>
+        <ul className="pi-list" aria-hidden="true">
           {MATCHUPS.map((m, i) => (
-            <p
+            <li
               key={m.high.team}
-              className="pi-reel-line"
-              style={{ animationDelay: `${REEL_START + i * REEL_STEP}ms` }}
+              className="pi-row"
+              style={{ animationDelay: `${LIST_START + i * LIST_STEP}ms` }}
             >
-              <Seed n={m.high.seed} />
-              {m.high.team}
+              <span className="pi-time">{formatTime(m.game.time).replace(":00", "")}</span>
+              <span className="pi-side pi-side-l">
+                <Seed n={m.high.seed} />
+                {m.high.team}
+              </span>
               <span className="pi-vs">vs</span>
-              {m.low.team}
-              <Seed n={m.low.seed} />
-              <span className="pi-time">{formatTime(m.game.time)}</span>
-            </p>
+              <span className="pi-side">
+                {m.low.team}
+                <Seed n={m.low.seed} />
+              </span>
+            </li>
           ))}
           {BYES.length > 0 && (
-            <p
-              className="pi-reel-line"
-              style={{ animationDelay: `${REEL_START + MATCHUPS.length * REEL_STEP}ms` }}
+            <li
+              className="pi-row pi-row-bye"
+              style={{ animationDelay: `${LIST_START + MATCHUPS.length * LIST_STEP}ms` }}
             >
               <span className="pi-bye">Bye</span>
               {BYES.join(" · ")}
-            </p>
+            </li>
           )}
-          <p className="pi-reel-line pi-reel-land" style={{ animationDelay: `${LAND_AT}ms` }}>
-            {FIRST_ROUND.round} &middot; {FIRST_ROUND.date}
-          </p>
-        </div>
-        <p className="pi-tag" style={{ animationDelay: `${LAND_AT + 160}ms` }}>
-          {TEAM_NAMES.length} teams &middot; {PLAYOFFS.length} rounds &middot; 1 banner
-        </p>
+        </ul>
       </div>
 
       <button
