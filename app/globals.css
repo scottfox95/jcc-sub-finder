@@ -224,6 +224,319 @@ body::after {
   }
 }
 
+/* ───────────── Playoff edition: cold-open intro ─────────────
+   Timeline (ms): lights 0–1060 · skyline 150–1150 · court 250–1300 ·
+   eyebrow 300 · letters 450–1385 · rule 1250 · hit 1350 · reel 1500–4140
+   (440 per card) · land 4140 · tag 4300 · auto-exit 5100 (JS) · leave 460.
+   Keep in sync with components/playoff-intro.tsx. */
+
+html[data-intro="off"] .pi { display: none; }
+
+.pi {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  background: #070708;
+  color: var(--foreground);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+  overscroll-behavior: contain;
+  /* Safety net: clears itself even if JS never hydrates (JS exits at 5.1s) */
+  animation: piSafety 400ms var(--ease-smooth) 6.4s forwards;
+  transition:
+    opacity var(--dur-slow) var(--ease-smooth),
+    transform var(--dur-slow) var(--ease-smooth),
+    filter var(--dur-slow) var(--ease-smooth);
+}
+@keyframes piSafety {
+  to { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+.pi-leave {
+  opacity: 0;
+  transform: scale(1.12);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* Four overhead gym lights; each strikes with a short halide flicker */
+.pi-lights { position: absolute; inset: 0; }
+.pi-light {
+  position: absolute;
+  top: -12vh;
+  left: calc(var(--i) * 26% - 14%);
+  width: 54%;
+  height: 92vh;
+  background: radial-gradient(50% 60% at 50% 0%, rgba(255, 196, 150, 0.16), rgba(255, 107, 43, 0.05) 45%, transparent 72%);
+  opacity: 0;
+  animation: piStrike 700ms linear both;
+  animation-delay: calc(var(--i) * 120ms);
+}
+/* The hit: a quick flash as the last letter lands */
+.pi-lights::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(90% 55% at 50% 0%, rgba(255, 200, 160, 0.22), transparent 70%);
+  opacity: 0;
+  animation: piFlash 360ms var(--ease-smooth) 1350ms both;
+}
+@keyframes piFlash {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.pi-light::before {
+  content: "";
+  position: absolute;
+  top: calc(12vh + 22px);
+  left: 50%;
+  width: 22px;
+  height: 3px;
+  margin-left: -11px;
+  border-radius: 2px;
+  background: #ffe2c8;
+  box-shadow: 0 0 14px 4px rgba(255, 170, 110, 0.55);
+}
+@keyframes piStrike {
+  0% { opacity: 0; }
+  8% { opacity: 0.9; }
+  14% { opacity: 0.15; }
+  22% { opacity: 0.75; }
+  30% { opacity: 0.35; }
+  100% { opacity: 1; }
+}
+
+/* Skyline sits on the horizon; the court floor runs toward the viewer */
+.pi-stage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 38%;
+  transform-origin: 50% 0%;
+  /* Slow push toward the court so the held frame never sits still */
+  animation: piPush 5400ms linear both;
+}
+@keyframes piPush {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+/* Warm wash where the lights hit the floor */
+.pi-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(70% 45% at 50% 0%, rgba(255, 107, 43, 0.09), transparent 70%);
+  opacity: 0;
+  animation: piFade 900ms var(--ease-smooth) 500ms both;
+  pointer-events: none;
+}
+.pi-skyline {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: clamp(440px, 100%, 760px);
+  /* Short viewports (Safari chrome, iPhone SE) cap the height so the spire
+     never reaches the title; the SVG stretches rather than crops. */
+  aspect-ratio: 10 / 3;
+  max-height: min(132px, 16svh);
+  transform: translateX(-50%);
+  margin-bottom: -1px;
+}
+.pi-sky-fill { fill: #111113; opacity: 0; animation: piFade 600ms var(--ease-smooth) 600ms both; }
+.pi-sky-line {
+  fill: none;
+  stroke: rgba(255, 107, 43, 0.55);
+  stroke-width: 0.8;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: piDraw 1000ms var(--ease-smooth) 150ms forwards;
+}
+.pi-court {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #121012 0%, #0b0a0b 70%);
+}
+.pi-court path,
+.pi-court ellipse {
+  fill: none;
+  stroke: rgba(255, 107, 43, 0.45);
+  stroke-width: 0.9;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: piDraw 1000ms var(--ease-smooth) 300ms forwards;
+}
+.pi-court path:nth-child(1),
+.pi-court path:nth-child(2) { animation-delay: 250ms; }
+@keyframes piDraw { to { stroke-dashoffset: 0; } }
+@keyframes piFade { from { opacity: 0; } to { opacity: 1; } }
+
+/* Title block, centred a little above the horizon */
+.pi-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: max(48px, 12svh);
+  padding: 0 16px;
+  text-align: center;
+}
+.pi-eyebrow {
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(244, 243, 241, 0.6);
+  animation: piEnter var(--dur-base) var(--ease-smooth) 300ms both;
+}
+.pi-word {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  font-size: clamp(3.5rem, min(22vw, 13svh), 8.5rem);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  /* The hit: the word punches in as the last letter lands */
+  animation: piHit 420ms cubic-bezier(0.23, 1, 0.32, 1) 1330ms both;
+}
+@keyframes piHit {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.045); }
+  100% { transform: scale(1); }
+}
+.pi-letter-mask { display: inline-block; overflow: hidden; padding: 0 0.01em; }
+.pi-letter {
+  display: inline-block;
+  background: linear-gradient(180deg, #fff6ee 0%, #ffd2b4 55%, #ff8a4f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: piRise 620ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+@keyframes piRise {
+  from { transform: translateY(105%); filter: blur(4px); }
+  to { transform: translateY(0); filter: blur(0); }
+}
+.pi-rule {
+  display: block;
+  width: 64px;
+  height: 2px;
+  margin: 16px auto 0;
+  border-radius: 1px;
+  background: var(--color-orange);
+  box-shadow: 0 0 12px rgba(255, 107, 43, 0.7);
+  transform: scaleX(0);
+  animation: courtLine 520ms var(--ease-smooth) 1250ms forwards;
+}
+
+/* Broadcast reel: one matchup at a time in a fixed slot */
+.pi-reel {
+  position: relative;
+  height: 28px;
+  margin-top: 18px;
+  overflow: hidden;
+}
+.pi-reel-line {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  opacity: 0;
+  /* 440ms per card: 90 in, 260 hold, 90 out */
+  animation: piPass 440ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+@keyframes piPass {
+  0% { opacity: 0; transform: translateY(70%); }
+  20%, 80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-70%); }
+}
+.pi-bye {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+}
+.pi-reel-land {
+  font-family: var(--font-anton);
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+  animation: piEnter var(--dur-base) var(--ease-smooth) both;
+}
+.pi-seed {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #0a0a0b;
+  background: var(--color-orange);
+}
+.pi-vs { color: rgba(244, 243, 241, 0.4); font-weight: 400; font-size: 0.8rem; }
+.pi-time { margin-left: 4px; color: rgba(244, 243, 241, 0.5); font-weight: 500; font-size: 0.78rem; }
+.pi-tag {
+  margin-top: 8px;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(244, 243, 241, 0.55);
+  animation: piEnter var(--dur-base) var(--ease-smooth) both;
+}
+/* Own name: tw-animate-css ships an `enter` keyframe that would win. */
+@keyframes piEnter {
+  from { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.pi-skip {
+  position: absolute;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  right: 16px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(244, 243, 241, 0.75);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  transition: transform var(--dur-fast) var(--ease-smooth), color var(--dur-fast) ease;
+}
+.pi-skip::before { content: ""; position: absolute; inset: -8px; }
+.pi-skip:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .pi-skip:hover { color: var(--foreground); }
+}
+
+/* Reduced motion: no flicker, rise or zoom; the finished frame fades in and out */
+@media (prefers-reduced-motion: reduce) {
+  .pi *, .pi *::before { animation-delay: 0ms !important; }
+  .pi-lights::after, .pi-stage { animation: none !important; }
+  .pi-reel-line:not(.pi-reel-land) { display: none; }
+  .pi-sky-line, .pi-court path, .pi-court ellipse { stroke-dashoffset: 0; }
+  .pi-rule { transform: none; }
+  .pi-leave { transform: none; filter: none; }
+  .pi { transition-duration: 200ms !important; }
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
