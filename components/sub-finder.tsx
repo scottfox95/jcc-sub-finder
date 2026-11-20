@@ -153,6 +153,14 @@ export function SubFinder() {
     [teamGames, now]
   );
 
+  /** Upcoming games first (next up on top), then played games, newest first. */
+  const orderedGames = useMemo(() => {
+    if (now == null) return teamGames;
+    const upcoming = teamGames.filter((g) => !isGameOver(g.date, g.time, now));
+    const played = teamGames.filter((g) => isGameOver(g.date, g.time, now)).reverse();
+    return [...upcoming, ...played];
+  }, [teamGames, now]);
+
   const stopScan = useCallback(() => {
     if (scanTimer.current) clearTimeout(scanTimer.current);
     setScanning(false);
@@ -289,7 +297,7 @@ export function SubFinder() {
           <section className="animate-enter">
             <SectionLabel step={3} label="Which Game?" />
             <div className="space-y-2 stagger-children">
-              {teamGames.map((game) => {
+              {orderedGames.map((game) => {
                 const played = now != null && isGameOver(game.date, game.time, now);
                 const isNext = game.date === nextGameDate;
                 return (

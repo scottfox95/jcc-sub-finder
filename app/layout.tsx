@@ -1,6 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Anton, DM_Sans } from "next/font/google";
 import "./globals.css";
+import { PlayoffIntro } from "@/components/playoff-intro";
+import { INTRO_END, INTRO_SEEN_KEY, PLAYOFF_EDITION_START } from "@/lib/playoffs";
+
+/**
+ * Runs before first paint: hide the playoff intro if it already played on this
+ * device, or it's outside the run-up to the first round. `?intro` forces a replay.
+ */
+const INTRO_GATE = `(function(){var d=document.documentElement;try{var n=Date.now();var force=/[?&]intro\\b/.test(location.search);if(!force&&(n<${PLAYOFF_EDITION_START}||n>${INTRO_END}||localStorage.getItem(${JSON.stringify(INTRO_SEEN_KEY)})))d.dataset.intro="off";}catch(e){}})();`;
 
 const anton = Anton({
   weight: "400",
@@ -46,10 +54,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: INTRO_GATE }} />
+      </head>
       <body
         className={`${anton.variable} ${dmSans.variable} font-sans antialiased`}
       >
+        <PlayoffIntro />
         {children}
       </body>
     </html>

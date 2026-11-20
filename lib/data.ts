@@ -215,6 +215,14 @@ export const SCHEDULE: Game[] = [
   { date: "Wed Nov 18", time: "20:00", team1: "Roth", team2: "Jackson" },
   { date: "Wed Nov 18", time: "21:00", team1: "Kirkley", team2: "Khoury" },
   { date: "Wed Nov 18", time: "21:00", team1: "Singer", team2: "Hawkins" },
+
+  // Wed Dec 2: Playoffs, First Round (seeds: 4v13, 7v11, 8v12, 5v9, 6v10; Singer,
+  // Spielman, Spizman on bye)
+  { date: "Wed Dec 2", time: "19:00", team1: "Levine", team2: "Tohar" },
+  { date: "Wed Dec 2", time: "20:00", team1: "Rosner", team2: "Weitz" },
+  { date: "Wed Dec 2", time: "20:00", team1: "Hawkins", team2: "Schnipper" },
+  { date: "Wed Dec 2", time: "21:00", team1: "Roth", team2: "Khoury" },
+  { date: "Wed Dec 2", time: "21:00", team1: "Kirkley", team2: "Jackson" },
 ];
 
 export function getTeamPlayers(team: string): Player[] {

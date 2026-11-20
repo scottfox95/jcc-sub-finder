@@ -227,8 +227,8 @@ function NightCard({
       <div className={status === "played" ? "opacity-50" : undefined}>
         <div className="flex items-center justify-between gap-2 px-4 py-3 border-b border-border/40">
           <div className="flex items-center gap-2.5 min-w-0">
-            <span className="font-display text-orange text-sm shrink-0 tracking-wide">
-              GAME {gameNum}
+            <span className="font-display text-orange text-sm shrink-0 tracking-wide uppercase">
+              {PLAYOFFS.find((p) => p.date === date)?.round ?? `Game ${gameNum}`}
             </span>
             <span className="text-sm font-medium text-foreground truncate">{fmtDate(date)}</span>
             {status === "next" && (

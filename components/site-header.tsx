@@ -1,15 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { PLAYOFFS, SEASON_NAME, SEASON_YEAR, formatTime } from "@/lib/data";
+import { SEASON_NAME, SEASON_YEAR, formatTime } from "@/lib/data";
 import { formatCountdown, nextGameNight } from "@/lib/game-time";
+import { isPlayoffEdition, nextUnscheduledRound } from "@/lib/playoffs";
 import { useNow } from "@/lib/use-now";
+
+// Evaluated where it renders (build or browser); both are past the regular
+// season from here on, so server and client agree.
+const PLAYOFF_EDITION = isPlayoffEdition();
 
 export function SiteHeader({
   active,
   onWordmark,
 }: {
-  active: "finder" | "schedule";
+  active: "finder" | "schedule" | "playoffs";
   /** When provided (home page), the wordmark resets state instead of navigating. */
   onWordmark?: () => void;
 }) {
@@ -20,6 +25,11 @@ export function SiteHeader({
     <header className="relative overflow-hidden pt-11 pb-5 px-5 text-center">
       <p className="text-[0.65rem] uppercase tracking-[0.32em] text-muted-foreground/90 mb-4">
         JCC Basketball &middot; {SEASON_NAME} {SEASON_YEAR}
+        {PLAYOFF_EDITION && (
+          <>
+            {" "}&middot; <span className="text-orange">Playoffs</span>
+          </>
+        )}
       </p>
       <h1 className="font-display text-[2.5rem] sm:text-5xl leading-none tracking-[0.01em]">
         <span className="relative inline-block isolate">
@@ -42,6 +52,9 @@ export function SiteHeader({
       <nav className="mt-4 inline-flex items-center gap-1 p-1 rounded-full bg-secondary/60 hairline">
         <NavPill href="/" label="Sub Finder" active={active === "finder"} />
         <NavPill href="/schedule" label="Schedule" active={active === "schedule"} />
+        {PLAYOFF_EDITION && (
+          <NavPill href="/playoffs" label="Bracket" active={active === "playoffs"} />
+        )}
       </nav>
     </header>
   );
@@ -104,8 +117,10 @@ function NextTipoff() {
             )
           ) : (
             <>
-              <span className="uppercase tracking-[0.14em] text-muted-foreground">Playoffs</span>
-              <span className="text-foreground/85">{PLAYOFFS[0].date}</span>
+              <span className="uppercase tracking-[0.14em] text-muted-foreground">
+                {nextUnscheduledRound().round}
+              </span>
+              <span className="text-foreground/85">{nextUnscheduledRound().date}</span>
             </>
           )}
         </div>
